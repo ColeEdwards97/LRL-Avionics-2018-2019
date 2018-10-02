@@ -4,10 +4,10 @@
 // | |__  |   / | |__     / _ \   \ V /   | |  | (_) | | .` |  | |  | (__  \__ \
 // |____| |_|_\ |____|   /_/ \_\   \_/   |___|  \___/  |_|\_| |___|  \___| |___/
 //                                                                            
-// Author:
-// Date Created: 
-// Date Revised:
-// Description:
+// Author:        Cole Edwards
+// Date Created:  1 October 2018
+// Date Revised:  1 October 2018
+// Description:   A sample piece of code, formatted for LRL
 //
 
 #include <iostream>

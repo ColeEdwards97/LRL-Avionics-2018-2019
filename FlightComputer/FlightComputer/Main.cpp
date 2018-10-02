@@ -17,6 +17,6 @@ using namespace std;
 int main() {
 
 	// a test program with formatting
-	cout << "This is the first code for this project";
+	cout << "This is the first code for this project\n";
 
 }

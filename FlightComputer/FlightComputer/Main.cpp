@@ -47,6 +47,10 @@ int main() {
 		cout << "bye. loser.\n";
 		return 0;
 	}
+	else if (ans == "pippity poppity") {
+		cout << "give me the zoppity\n";
+		return 0;
+	}
 
 	return 0;
 

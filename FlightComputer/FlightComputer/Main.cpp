@@ -19,4 +19,35 @@ int main() {
 	// a test program with formatting
 	cout << "This is the first code for this project\n";
 
+	string name;
+	int age;
+	string ans;
+
+	cout << "please enter your name:\n";
+	cin >> name;
+	cout << "welcome " << name << "!\n";
+	cout << "please enter your age:\n";
+	cin >> age;
+
+	if (age >= 18) {
+		cout << "congratulations! you are old enough to enter\n";
+	}
+	else {
+		cout << "sorry, you may not enter\n";
+		return 0;
+	}
+
+	cout << "would you like to stay? Y/N\n";
+	cin >> ans;
+
+	if (ans == "Y") {
+		cout << "cool! no one usually stays\n";
+	}
+	else if (ans == "N") {
+		cout << "bye. loser.\n";
+		return 0;
+	}
+
+	return 0;
+
 }

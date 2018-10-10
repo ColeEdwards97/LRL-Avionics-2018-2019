@@ -10,8 +10,6 @@
 // Description:   A sample piece of code, formatted for LRL
 //
 
-// just testing everything out. have a good day
-
 #include <iostream>
 #include <string>
 using namespace std;

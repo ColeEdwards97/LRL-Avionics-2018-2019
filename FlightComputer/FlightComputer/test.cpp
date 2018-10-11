@@ -14,7 +14,7 @@
 #include <string>
 using namespace std;
 
-int main() {
+int main_test() {
 
 	// a test program with formatting
 	cout << "This is the first code for this project\n";

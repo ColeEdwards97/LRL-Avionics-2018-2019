@@ -50,5 +50,12 @@ int b1_states::transCount(void) {
 // Define the B1 functions
 int b1_states::fn1(void) {
 	std::cout << "ST_TERM\n";
+
+	int j = 1;
+	for each (MPS_CONFIG i in b1_states::getInstance().conf) {
+		std::cout << j << std::endl;
+		j++;
+	}
+
 	return ST_TERM;
 }

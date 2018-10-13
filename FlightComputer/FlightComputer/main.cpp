@@ -23,13 +23,13 @@
 #include "b1_states.h"
 
 
-b1_states* states = new b1_states();
+b1_states& states = b1_states::getInstance();
 
 
 // returns the next event
 // TODO: add code to gather output from users and hardware
 b1_states::b1_event GetNextEvent(void) {
-	return states->EV_OVR_PR;
+	return states.EV_OVR_PR;
 };
 
 
@@ -38,19 +38,19 @@ b1_states::b1_event GetNextEvent(void) {
 int main() {
 
 	int i;
-	int state = states->getState();
-	int event = states->getEvent();
+	int state = states.getState();
+	int event = states.getEvent();
 
-	while (state != states->ST_TERM) {
+	while (state != states.ST_TERM) {
 
 		event = GetNextEvent();
 
-		for (i = 0; i < states->transCount(); i++) {
+		for (i = 0; i < states.transCount(); i++) {
 
-			if ((state == states->trans[i].st) || (states->ST_ANY == states->trans[i].st)) {
+			if ((state == states.trans[i].st) || (states.ST_ANY == states.trans[i].st)) {
 
-				if ((event == states->trans[i].ev) || (states->EV_ANY == states->trans[i].ev)) {
-					state = (states->trans[i].fn)();
+				if ((event == states.trans[i].ev) || (states.EV_ANY == states.trans[i].ev)) {
+					state = (states.trans[i].fn)();
 					break;
 				}
 

@@ -13,15 +13,23 @@
 //
 //
 // GENERAL TODOS
-// TODO: add hardware struct
 //
 // INCLUDES
 #pragma once
 #include <iostream>
+#include "b1_hardware.h"
 
 class b1_states {
 
 public:
+
+	// SINGLETON
+	static b1_states& getInstance() {
+		static b1_states instance;
+		return instance;
+	}
+	b1_states(b1_states const&) = delete;
+	void operator=(b1_states const&) = delete;
 
 	// ENUMS
 	// B1 States
@@ -53,31 +61,49 @@ public:
 
 	// STRUCTS
 	typedef struct {
+		b1_hardware::sol_state ss1;
+		b1_hardware::sol_state ss2;
+		b1_hardware::vent_state vs1;
+		b1_hardware::vent_state vs2;
+		b1_hardware::pyro_state ps1;
+		b1_hardware::pyro_state ps2;
+	} MPS_CONFIG;
+
+	b1_states::MPS_CONFIG conf[1] {
+		{ b1_hardware::sol_state::CLOSED,
+		b1_hardware::sol_state::CLOSED,
+		b1_hardware::vent_state::CLOSED,
+		b1_hardware::vent_state::CLOSED,
+		b1_hardware::pyro_state::INTACT,
+		b1_hardware::pyro_state::INTACT }
+	};
+
+	typedef struct {
 		b1_state st;
 		b1_event ev;
+		MPS_CONFIG conf;
 		int(*fn)(void);
 	} tTransition;
 
-	// Populate transitions table
 	b1_states::tTransition trans[2] = {
-		{ST_INIT, EV_FULL_TEMP, fn1},
-		{ST_INIT, EV_OVR_PR, fn1}
+		{ ST_INIT, EV_FULL_TEMP, conf[1], fn1 },
+		{ ST_INIT, EV_OVR_PR, conf[1], fn1 }
 	};
 
-	// CONSTRUCTOR
-	b1_states();
-
 	// METHODS
-	void setState(b1_state newState);
-	void setEvent(b1_event newEvent);
 	b1_state getState(void);
 	b1_event getEvent(void);
+	void setState(b1_state newState);
+	void setEvent(b1_event newEvent);
 
 	static int fn1(void);
 
 	int transCount(void);
 
 private:
+
+	// CONSTRUCTOR
+	b1_states();
 
 	b1_state currentState;
 	b1_event currentEvent;

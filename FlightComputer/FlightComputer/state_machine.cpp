@@ -8,7 +8,7 @@
 // University:    California State Polytechnic University, Pomona
 // Author:        Cole Edwards
 // Date Created:  15 October 2018
-// Date Revised:  15 October 2018
+// Date Revised:  16 October 2018
 // Description:   State Machine
 //
 //
@@ -36,6 +36,8 @@ void state_machine::run(void) {
 	int i;
 	int state = states.getState();
 	int event = states.getEvent();
+
+	std::cout << "state machine started!\n" << "status:\n" << "-state: " << state << std::endl << "-event: " << event << std::endl;
 
 	// while currentState != ST_TERM
 	//		while !eventQueue.empty()

@@ -8,7 +8,7 @@
 // University:    California State Polytechnic University, Pomona
 // Author:        Cole Edwards
 // Date Created:  11 October 2018
-// Date Revised:  12 October 2018
+// Date Revised:  15 October 2018
 // Description:   Bronco 1 States definition
 //
 //
@@ -49,7 +49,6 @@ int b1_states::transCount(void) {
 // Define the B1 functions
 int b1_states::fn1(void) {
 	std::cout << "ST_TERM\n";
-
 	return ST_TERM;
 }
 int b1_states::fn2(void) {

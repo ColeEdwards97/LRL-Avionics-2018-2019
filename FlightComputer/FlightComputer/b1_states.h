@@ -85,9 +85,10 @@ public:
 		int(*fn)(void);
 	} tTransition;
 
-	b1_states::tTransition trans[2] = {
+	b1_states::tTransition trans[3] = {
 		{ ST_ANY, EV_FULL_TEMP, conf[1], fn1 },
-		{ ST_ANY, EV_OVR_PR, conf[1], fn2 }
+		{ ST_ANY, EV_OVR_PR, conf[1], fn2 },
+		{ ST_ANY, EV_NOMINAL, conf[1], fn2 }
 	};
 
 	// METHODS

@@ -16,6 +16,8 @@
 //
 // GENERAL TODOS
 // TODO: Modify GetNextEvent Function to gather user input
+// TODO: Implement multi-threading (use <queue>)
+// TODO: Refactor into state_machine.cpp,.h
 //
 // INCLUDES
 #include <iostream>
@@ -23,18 +25,24 @@
 #include "b1_states.h"
 
 
+// INSTANCE THE B1 STATES
 b1_states& states = b1_states::getInstance();
 
 
 // returns the next event
 // TODO: add code to gather output from users and hardware
 b1_states::b1_event GetNextEvent(void) {
+	// some list of inputs to get based on importance
+	// data collection should be run in a separate thread
+	// this function should just pull the latest value from the thread
+	// ***consider having another thread notify this thread of a change in event
 	return states.EV_OVR_PR;
 };
 
 
 // create the main state machine
 // TODO: complete this pseudo code
+// TODO: move to an update() function in state_machine class
 int main() {
 
 	int i;

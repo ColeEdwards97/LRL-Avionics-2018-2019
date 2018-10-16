@@ -1,3 +1,20 @@
+// 
+//  _      ___   _          _    __   __  ___    ___    _  _   ___    ___   ___ 
+// | |    | _ \ | |        /_\   \ \ / / |_ _|  / _ \  | \| | |_ _|  / __| / __|
+// | |__  |   / | |__     / _ \   \ V /   | |  | (_) | | .` |  | |  | (__  \__ \
+// |____| |_|_\ |____|   /_/ \_\   \_/   |___|  \___/  |_|\_| |___|  \___| |___/
+//                
+// Organization:  Liquid Bi-Propellant Rocket Project
+// University:    California State Polytechnic University, Pomona
+// Author:        Cole Edwards
+// Date Created:  12 October 2018
+// Date Revised:  12 October 2018
+// Description:   Bronco 1 Hardware definition
+//
+//
+// GENERAL TODOS
+//
+// INCLUDES
 #pragma once
 
 

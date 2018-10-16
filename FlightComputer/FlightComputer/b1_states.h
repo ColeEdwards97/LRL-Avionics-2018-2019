@@ -87,7 +87,7 @@ public:
 
 	b1_states::tTransition trans[2] = {
 		{ ST_INIT, EV_FULL_TEMP, conf[1], fn1 },
-		{ ST_INIT, EV_OVR_PR, conf[1], fn1 }
+		{ ST_ANY, EV_OVR_PR, conf[1], fn1 }
 	};
 
 	// METHODS

@@ -20,12 +20,18 @@
 // INCLUDES
 #include <iostream>
 #include <string>
+#include <thread>
 #include "state_machine.h"
 
 
 // INSTANCE THE STATE MACHINE
 state_machine& sm = state_machine::getInstance();
 
+
+void gather_input(void) {
+	sm.pushEvent(b1_states::EV_OVR_PR);
+	sm.pushEvent(b1_states::EV_FULL_TEMP);
+}
 
 // TODO: create threads for input
 // TODO: add code to gather output from users and hardware
@@ -35,35 +41,12 @@ state_machine& sm = state_machine::getInstance();
 //	// ***consider having another thread notify this thread of a change in event
 int main() {
 
+	
+	std::thread th_INPUT(gather_input);
+
+
 	sm.run();
 
+	th_INPUT.join();
+
 }
-
-
-// create the main state machine
-//int main() {
-//
-//	int i;
-//	int state = states.getState();
-//	int event = states.getEvent();
-//
-//	while (state != states.ST_TERM) {
-//
-//		event = GetNextEvent();
-//
-//		for (i = 0; i < states.transCount(); i++) {
-//
-//			if ((state == states.trans[i].st) || (states.ST_ANY == states.trans[i].st)) {
-//
-//				if ((event == states.trans[i].ev) || (states.EV_ANY == states.trans[i].ev)) {
-//					state = (states.trans[i].fn)();
-//					break;
-//				}
-//
-//			}
-//
-//		}
-//
-//	}
-//
-//}

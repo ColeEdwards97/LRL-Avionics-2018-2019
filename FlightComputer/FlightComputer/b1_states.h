@@ -86,8 +86,8 @@ public:
 	} tTransition;
 
 	b1_states::tTransition trans[2] = {
-		{ ST_INIT, EV_FULL_TEMP, conf[1], fn1 },
-		{ ST_ANY, EV_OVR_PR, conf[1], fn1 }
+		{ ST_ANY, EV_FULL_TEMP, conf[1], fn1 },
+		{ ST_ANY, EV_OVR_PR, conf[1], fn2 }
 	};
 
 	// METHODS
@@ -97,6 +97,7 @@ public:
 	void setEvent(b1_event newEvent);
 
 	static int fn1(void);
+	static int fn2(void);
 
 	int transCount(void);
 

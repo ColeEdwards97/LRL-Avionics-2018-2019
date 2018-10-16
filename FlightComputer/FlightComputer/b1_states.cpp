@@ -14,7 +14,6 @@
 //
 // GENERAL TODOS
 // 
-//
 // INCLUDES
 #include "b1_states.h"
 
@@ -52,4 +51,8 @@ int b1_states::fn1(void) {
 	std::cout << "ST_TERM\n";
 
 	return ST_TERM;
+}
+int b1_states::fn2(void) {
+	std::cout << "ST_CRUISE\n";
+	return ST_CRUISE;
 }

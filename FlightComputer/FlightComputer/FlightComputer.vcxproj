@@ -149,11 +149,13 @@
     <ClCompile Include="b1_hardware.cpp" />
     <ClCompile Include="b1_states.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="state_machine.cpp" />
     <ClCompile Include="test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="b1_hardware.h" />
     <ClInclude Include="b1_states.h" />
+    <ClInclude Include="state_machine.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

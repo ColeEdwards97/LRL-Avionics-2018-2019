@@ -13,12 +13,11 @@
 //
 //
 // GENERAL TODOS
+// TODO: consider abstracting
 //
 // INCLUDES
 #pragma once
 
-
-// TODO: consider abstracting
 
 class b1_hardware {
 
@@ -62,6 +61,7 @@ public:
 
 private:
 
+	// VARIABLES 
 	hardware hardwareType;
 
 	sol_state currentSolState;

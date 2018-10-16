@@ -101,8 +101,8 @@ public:
 	int transCount(void);
 
 private:
-
-	// CONSTRUCTOR
+	
+	// CONSTRUCTOR 
 	b1_states();
 
 	b1_state currentState;

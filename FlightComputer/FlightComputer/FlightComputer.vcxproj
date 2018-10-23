@@ -71,6 +71,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Users\Cole\Desktop\wiringPi\wiringPi;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -148,6 +149,7 @@
   <ItemGroup>
     <ClCompile Include="b1_hardware.cpp" />
     <ClCompile Include="b1_states.cpp" />
+    <ClCompile Include="input_PT.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="state_machine.cpp" />
     <ClCompile Include="test.cpp" />
@@ -155,7 +157,12 @@
   <ItemGroup>
     <ClInclude Include="b1_hardware.h" />
     <ClInclude Include="b1_states.h" />
+    <ClInclude Include="input_PT.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="state_machine.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="FlightComputer.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

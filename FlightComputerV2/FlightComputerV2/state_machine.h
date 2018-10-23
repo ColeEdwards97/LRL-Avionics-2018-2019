@@ -1,21 +1,11 @@
-// 
-//  _      ___   _          _    __   __  ___    ___    _  _   ___    ___   ___ 
-// | |    | _ \ | |        /_\   \ \ / / |_ _|  / _ \  | \| | |_ _|  / __| / __|
-// | |__  |   / | |__     / _ \   \ V /   | |  | (_) | | .` |  | |  | (__  \__ \
-// |____| |_|_\ |____|   /_/ \_\   \_/   |___|  \___/  |_|\_| |___|  \___| |___/
-//                
-// Organization:  Liquid Bi-Propellant Rocket Project
-// University:    California State Polytechnic University, Pomona
-// Author:        Cole Edwards
-// Date Created:  15 October 2018
-// Date Revised:  15 October 2018
-// Description:   State Machine
-//
-//
-// GENERAL TODOS
-//
-// INCLUDES
 #pragma once
+#include <wiringPi.h>
+#include <iostream>	
+#include <string>
+#include <unistd.h>
+#include <cstdio>
+#include <thread>
+#include <chrono>
 #include <queue>
 #include "b1_states.h"
 #include "b1_hardware.h"
@@ -43,7 +33,7 @@ public:
 		static b1_states::b1_state currentState;
 		static b1_states::b1_event lastEvent;
 	};
-	
+
 	// GETTERS
 	b1_status getCurrentStatus(void);
 
@@ -62,4 +52,3 @@ private:
 	std::queue<b1_states::b1_event> eventQueue;
 
 };
-

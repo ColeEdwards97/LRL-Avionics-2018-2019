@@ -1,29 +1,30 @@
-// 
+//
 //  _      ___   _          _    __   __  ___    ___    _  _   ___    ___   ___ 
 // | |    | _ \ | |        /_\   \ \ / / |_ _|  / _ \  | \| | |_ _|  / __| / __|
 // | |__  |   / | |__     / _ \   \ V /   | |  | (_) | | .` |  | |  | (__  \__ \
 // |____| |_|_\ |____|   /_/ \_\   \_/   |___|  \___/  |_|\_| |___|  \___| |___/
-//                
+//
 // Organization:  Liquid Bi-Propellant Rocket Project
 // University:    California State Polytechnic University, Pomona
-// Author:        Cole Edwards, Mark Murphy
-// Date Created:  11 October 2018
-// Date Revised:  16 October 2018
-// Description:   The main flight computer code for the Bronco 1 Launch Vehicle.
-//				  This state machine handles all rocket states and possible input 
-//				  events and delegates tasks to other parts of the avionics bay.
+// Author:        Cole Edwards
+// Date Created:  23 October 2018
+// Date Revised:  23 October 2018
+// File Name:     main.cpp
+// Description:   Sample Template
 //
 //
 // GENERAL TODOS
-// TODO: Implement multi-threading (use <queue>)
 //
 // INCLUDES
-#include <iostream>
+#include <wiringPi.h>
+#include <iostream>	
 #include <string>
+#include <unistd.h>
+#include <cstdio>
 #include <thread>
+#include <chrono>
 #include "state_machine.h"
-#include "input_PT.h"
-
+#include "input.h"
 
 // INSTANCE THE STATE MACHINE
 state_machine& sm = state_machine::getInstance();
@@ -37,6 +38,8 @@ state_machine& sm = state_machine::getInstance();
 //	// ***consider having another thread notify this thread of a change in event
 int main() {
 
+	std::cout << "[INFO][main.cpp] Starting Flight Computer" << std::endl;
+
 	// start the thread that gathers system inputs
 	std::thread th_INPUT(gather_input);
 
@@ -44,7 +47,7 @@ int main() {
 	// add a return in state machine for status
 	// while(status)...
 	sm.run();
-	
+
 	// wait until input thread finishes
 	th_INPUT.join();
 

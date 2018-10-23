@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2046
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FlightComputerV2", "FlightComputerV2\FlightComputerV2.vcxproj", "{63113001-85BB-4991-948B-2C6580D1B570}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|ARM = Debug|ARM
+		Debug|ARM64 = Debug|ARM64
+		Release|ARM = Release|ARM
+		Release|ARM64 = Release|ARM64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{63113001-85BB-4991-948B-2C6580D1B570}.Debug|ARM.ActiveCfg = Debug|ARM
+		{63113001-85BB-4991-948B-2C6580D1B570}.Debug|ARM.Build.0 = Debug|ARM
+		{63113001-85BB-4991-948B-2C6580D1B570}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{63113001-85BB-4991-948B-2C6580D1B570}.Debug|ARM64.Build.0 = Debug|ARM64
+		{63113001-85BB-4991-948B-2C6580D1B570}.Release|ARM.ActiveCfg = Release|ARM
+		{63113001-85BB-4991-948B-2C6580D1B570}.Release|ARM.Build.0 = Release|ARM
+		{63113001-85BB-4991-948B-2C6580D1B570}.Release|ARM64.ActiveCfg = Release|ARM64
+		{63113001-85BB-4991-948B-2C6580D1B570}.Release|ARM64.Build.0 = Release|ARM64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B87B62E5-BC93-43C6-A693-CD6F905EA01D}
+	EndGlobalSection
+EndGlobal

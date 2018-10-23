@@ -1,20 +1,3 @@
-// 
-//  _      ___   _          _    __   __  ___    ___    _  _   ___    ___   ___ 
-// | |    | _ \ | |        /_\   \ \ / / |_ _|  / _ \  | \| | |_ _|  / __| / __|
-// | |__  |   / | |__     / _ \   \ V /   | |  | (_) | | .` |  | |  | (__  \__ \
-// |____| |_|_\ |____|   /_/ \_\   \_/   |___|  \___/  |_|\_| |___|  \___| |___/
-//                
-// Organization:  Liquid Bi-Propellant Rocket Project
-// University:    California State Polytechnic University, Pomona
-// Author:        Cole Edwards
-// Date Created:  15 October 2018
-// Date Revised:  16 October 2018
-// Description:   State Machine
-//
-//
-// GENERAL TODOS
-//
-// INCLUDES
 #include "state_machine.h"
 
 
@@ -47,7 +30,7 @@ void state_machine::run(void) {
 	std::cout << "-event: " << static_cast<int>(event) << std::endl;
 
 	while (state != states.ST_TERM) {
-		
+
 		if (!eventQueue.empty()) {
 
 			std::cout << "Queue has " << eventQueue.size() << " member(s)!\n";

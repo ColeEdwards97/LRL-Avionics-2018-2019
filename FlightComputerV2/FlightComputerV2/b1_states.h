@@ -1,22 +1,9 @@
-// 
-//  _      ___   _          _    __   __  ___    ___    _  _   ___    ___   ___ 
-// | |    | _ \ | |        /_\   \ \ / / |_ _|  / _ \  | \| | |_ _|  / __| / __|
-// | |__  |   / | |__     / _ \   \ V /   | |  | (_) | | .` |  | |  | (__  \__ \
-// |____| |_|_\ |____|   /_/ \_\   \_/   |___|  \___/  |_|\_| |___|  \___| |___/
-//                
-// Organization:  Liquid Bi-Propellant Rocket Project
-// University:    California State Polytechnic University, Pomona
-// Author:        Cole Edwards
-// Date Created:  11 October 2018
-// Date Revised:  12 October 2018
-// Description:   Bronco 1 States definition
-//
-//
-// GENERAL TODOS
-//
-// INCLUDES
 #pragma once
-#include <iostream>
+#include <wiringPi.h>
+#include <iostream>	
+#include <string>
+#include <unistd.h>
+#include <cstdio>
 #include "b1_hardware.h"
 
 class b1_states {
@@ -69,7 +56,7 @@ public:
 		b1_hardware::pyro_state ps2;
 	} MPS_CONFIG;
 
-	b1_states::MPS_CONFIG conf[1] {
+	b1_states::MPS_CONFIG conf[1]{
 		{ b1_hardware::sol_state::CLOSED,
 		b1_hardware::sol_state::CLOSED,
 		b1_hardware::vent_state::CLOSED,
@@ -103,7 +90,7 @@ public:
 	int transCount(void);
 
 private:
-	
+
 	// CONSTRUCTOR 
 	b1_states();
 

@@ -1,3 +1,32 @@
+//
+//  _      ___   _          _    __   __  ___    ___    _  _   ___    ___   ___ 
+// | |    | _ \ | |        /_\   \ \ / / |_ _|  / _ \  | \| | |_ _|  / __| / __|
+// | |__  |   / | |__     / _ \   \ V /   | |  | (_) | | .` |  | |  | (__  \__ \
+// |____| |_|_\ |____|   /_/ \_\   \_/   |___|  \___/  |_|\_| |___|  \___| |___/
+//
+// Organization:  Liquid Bi-Propellant Rocket Project
+// University:    California State Polytechnic University, Pomona
+// Author:        Cole Edwards
+// Date Created:  23 October 2018
+// Date Revised:  06 November 2018
+// File Name:     state_machine.cpp
+// Description:   Source file for state_machine.h.  Defines the overall behavior
+//                of the Flight Computer.  Essentially, the state machine is the
+//                main thread that accepts input via the <queue> module and 
+//                determines the course of action based on these inputs using
+//                the transition table in b1_states.h.  The loop that it runs
+//                in is defined below.  This state machine is an implementation 
+//                of a Finite State Machine.  This implementation accepts 
+//                'wildcards', meaning it includes the case that the Bronco One
+//                is either in ANY state, or recieves ANY input event.  On each
+//                loop, the state machine checks the event queue which is
+//                populated on another thread by the methods in input.h and
+//                input.cpp.  The latest event is then evaluated and the state
+//                machine moves on to the next event in the queue.
+//
+// GENERAL TODOS
+//
+// INCLUDES
 #include "state_machine.h"
 
 
@@ -46,7 +75,7 @@ void state_machine::run(void) {
 				if ((state == states.trans[i].st) || (states.ST_ANY == states.trans[i].st)) {
 
 					if ((event == states.trans[i].ev) || (states.EV_ANY == states.trans[i].ev)) {
-						state = (states.trans[i].fn)();
+						state = (states.trans[i].fn)(states.trans[i].conf);
 						eventQueue.pop();
 						break;
 					}

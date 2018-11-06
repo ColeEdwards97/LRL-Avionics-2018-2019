@@ -1,3 +1,21 @@
+//
+//  _      ___   _          _    __   __  ___    ___    _  _   ___    ___   ___ 
+// | |    | _ \ | |        /_\   \ \ / / |_ _|  / _ \  | \| | |_ _|  / __| / __|
+// | |__  |   / | |__     / _ \   \ V /   | |  | (_) | | .` |  | |  | (__  \__ \
+// |____| |_|_\ |____|   /_/ \_\   \_/   |___|  \___/  |_|\_| |___|  \___| |___/
+//
+// Organization:  Liquid Bi-Propellant Rocket Project
+// University:    California State Polytechnic University, Pomona
+// Author:        Cole Edwards
+// Date Created:  23 October 2018
+// Date Revised:  23 October 2018
+// File Name:     b1_hardware.h
+// Description:   Constructor file for b1_hardware.cpp.  Defines the Bronco
+//                One's hardware and their possible states.
+//
+// GENERAL TODOS
+//
+// INCLUDES
 #pragma once
 
 

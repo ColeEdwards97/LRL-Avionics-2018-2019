@@ -1,3 +1,22 @@
+//
+//  _      ___   _          _    __   __  ___    ___    _  _   ___    ___   ___ 
+// | |    | _ \ | |        /_\   \ \ / / |_ _|  / _ \  | \| | |_ _|  / __| / __|
+// | |__  |   / | |__     / _ \   \ V /   | |  | (_) | | .` |  | |  | (__  \__ \
+// |____| |_|_\ |____|   /_/ \_\   \_/   |___|  \___/  |_|\_| |___|  \___| |___/
+//
+// Organization:  Liquid Bi-Propellant Rocket Project
+// University:    California State Polytechnic University, Pomona
+// Author:        Cole Edwards
+// Date Created:  23 October 2018
+// Date Revised:  23 October 2018
+// File Name:     input.cpp
+// Description:   Source file for input.h.  Defines functions that will be
+//                called by threads to recieve various input types
+//
+// GENERAL TODOS
+// TODO: add functions for all possible input types
+//
+// INCLUDES
 #include "input.h"
 
 int gather_input() {

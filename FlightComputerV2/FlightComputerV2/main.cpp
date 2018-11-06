@@ -6,14 +6,21 @@
 //
 // Organization:  Liquid Bi-Propellant Rocket Project
 // University:    California State Polytechnic University, Pomona
-// Author:        Cole Edwards
+// Author:        Cole Edwards, Mark Murphy
 // Date Created:  23 October 2018
 // Date Revised:  23 October 2018
 // File Name:     main.cpp
-// Description:   Sample Template
+// Description:   The main file.  Everything on the Flight Computer is called
+//                from this file.  It initializes the Flight Computer and
+//                delegates tasks to various other files.  This code utilizes 
+//                multi-threading which allows the flight computer to run while
+//                at the same time, collecting input from various sources.  The
+//                Flight Computer can then be updated in real time allowing 
+//                multiple tasks to run simultaneously.
 //
 //
 // GENERAL TODOS
+// TODO: write proper initialization code w/ error handling
 //
 // INCLUDES
 #include <wiringPi.h>
@@ -26,6 +33,9 @@
 #include "state_machine.h"
 #include "input.h"
 
+// BCM_GPIO pins to export
+#define LED 17
+
 // INSTANCE THE STATE MACHINE
 state_machine& sm = state_machine::getInstance();
 
@@ -37,6 +47,24 @@ state_machine& sm = state_machine::getInstance();
 //	// this function should just pull the latest value from the thread
 //	// ***consider having another thread notify this thread of a change in event
 int main() {
+
+
+	// CODE FOR TESTING
+	std::cout << "test flash" << std::endl;
+	wiringPiSetupSys();
+	
+	pinMode(LED, OUTPUT);
+	
+	digitalWrite(LED, HIGH);  // On
+	delay(500); // ms
+	digitalWrite(LED, LOW);	  // Off
+	delay(500);
+	// End of testing code
+
+
+
+
+
 
 	std::cout << "[INFO][main.cpp] Starting Flight Computer" << std::endl;
 

@@ -9,8 +9,9 @@
 // Author:        Cole Edwards
 // Date Created:  23 October 2018
 // Date Revised:  23 October 2018
-// File Name:     main.cpp
-// Description:   Sample Template
+// File Name:     test.cpp
+// Description:   Sample Template.  This file is not to be included in the final
+//                build.  It is a formatting template for all other files.
 //
 //
 // GENERAL TODOS

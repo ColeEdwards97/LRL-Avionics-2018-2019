@@ -24,6 +24,13 @@ b1_states::b1_states() {
 	currentState = b1_state::ST_INIT;
 	currentEvent = b1_event::EV_NOMINAL;
 
+	sol_1 = new b1_hardware(PIN_SOL_1, b1_hardware::hardware::SOLENOID);
+	sol_2 = new b1_hardware(PIN_SOL_2, b1_hardware::hardware::SOLENOID);
+	vent_1 = new b1_hardware(PIN_VENT_1, b1_hardware::hardware::VENT);
+	vent_2 = new b1_hardware(PIN_VENT_2, b1_hardware::hardware::VENT);
+	pyro_1 = new b1_hardware(PIN_PYRO_1, b1_hardware::hardware::PYRO);
+	pyro_2 = new b1_hardware(PIN_PYRO_2, b1_hardware::hardware::PYRO);
+
 }
 
 // GETTERS
@@ -47,9 +54,24 @@ int b1_states::transCount(void) {
 	return (sizeof(trans) / sizeof(*trans));
 }
 
-// Define the B1 functions
+// Define the B1 state functions
 b1_states::b1_state b1_states::fn1(b1_states::MPS_CONFIG conf) {
 	std::cout << "ST_TERM\n";
+
+	// wait conf.wait1
+	sol_1->setSolState(conf.ss1);
+	// wait
+	sol_2->setSolState(conf.ss2);
+	// wait
+	vent_1->setVentState(conf.vs1);
+	// wait
+	vent_2->setVentState(conf.vs2);
+	// wait
+	pyro_1->setPyroState(conf.ps1);
+	// wait
+	pyro_2->setPyroState(conf.ps2);
+
+
 	return ST_TERM;
 }
 b1_states::b1_state b1_states::fn2(b1_states::MPS_CONFIG conf) {

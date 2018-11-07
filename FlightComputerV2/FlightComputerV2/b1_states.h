@@ -26,6 +26,7 @@
 #include <unistd.h>
 #include <cstdio>
 #include "b1_hardware.h"
+#include "pinout.h"
 
 class b1_states {
 
@@ -83,7 +84,7 @@ public:
 		int wait_ps2;
 	} MPS_CONFIG;
 
-	b1_states::MPS_CONFIG conf[1]{
+	b1_states::MPS_CONFIG conf[1] {
 		{ b1_hardware::sol_state::CLOSED,
 		b1_hardware::sol_state::CLOSED,
 		b1_hardware::vent_state::CLOSED,
@@ -125,5 +126,12 @@ private:
 	// VARIABLES
 	b1_state currentState;
 	b1_event currentEvent;
+
+	static b1_hardware* sol_1;
+	static b1_hardware* sol_2;
+	static b1_hardware* vent_1;
+	static b1_hardware* vent_2;
+	static b1_hardware* pyro_1;
+	static b1_hardware* pyro_2;
 
 };

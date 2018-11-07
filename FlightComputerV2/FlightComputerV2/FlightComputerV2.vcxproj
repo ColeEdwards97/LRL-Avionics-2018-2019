@@ -69,6 +69,7 @@
     <ClCompile Include="b1_states.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="pinout.cpp" />
     <ClCompile Include="state_machine.cpp" />
     <ClCompile Include="test.cpp" />
   </ItemGroup>
@@ -76,6 +77,7 @@
     <ClInclude Include="b1_hardware.h" />
     <ClInclude Include="b1_states.h" />
     <ClInclude Include="input.h" />
+    <ClInclude Include="pinout.h" />
     <ClInclude Include="state_machine.h" />
   </ItemGroup>
   <ItemDefinitionGroup />

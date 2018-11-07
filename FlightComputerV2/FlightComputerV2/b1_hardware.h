@@ -8,7 +8,7 @@
 // University:    California State Polytechnic University, Pomona
 // Author:        Cole Edwards
 // Date Created:  23 October 2018
-// Date Revised:  23 October 2018
+// Date Revised:  06 November 2018
 // File Name:     b1_hardware.h
 // Description:   Constructor file for b1_hardware.cpp.  Defines the Bronco
 //                One's hardware and their possible states.
@@ -17,7 +17,7 @@
 //
 // INCLUDES
 #pragma once
-
+#include "pinout.h"
 
 class b1_hardware {
 
@@ -47,9 +47,11 @@ public:
 	};
 
 	// CONSTRUCTOR
-	b1_hardware();
+	b1_hardware(int);
+	b1_hardware(int, hardware);
 
 	// METHODS
+	int getHardwarePin(void);
 	hardware getHardwareType(void);
 	sol_state getSolState(void);
 	vent_state getVentState(void);
@@ -62,6 +64,8 @@ public:
 private:
 
 	// VARIABLES 
+	int gpio_pin;
+
 	hardware hardwareType;
 
 	sol_state currentSolState;

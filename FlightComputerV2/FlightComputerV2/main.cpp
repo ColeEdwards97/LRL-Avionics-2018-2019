@@ -8,7 +8,7 @@
 // University:    California State Polytechnic University, Pomona
 // Author:        Cole Edwards, Mark Murphy
 // Date Created:  23 October 2018
-// Date Revised:  23 October 2018
+// Date Revised:  06 November 2018
 // File Name:     main.cpp
 // Description:   The main file.  Everything on the Flight Computer is called
 //                from this file.  It initializes the Flight Computer and
@@ -32,9 +32,7 @@
 #include <chrono>
 #include "state_machine.h"
 #include "input.h"
-
-// BCM_GPIO pins to export
-#define LED 17
+#include "pinout.h"
 
 // INSTANCE THE STATE MACHINE
 state_machine& sm = state_machine::getInstance();
@@ -48,17 +46,20 @@ state_machine& sm = state_machine::getInstance();
 //	// ***consider having another thread notify this thread of a change in event
 int main() {
 
+	initialize_pins();
 
 	// CODE FOR TESTING
-	std::cout << "test flash" << std::endl;
-	wiringPiSetupSys();
-	
-	pinMode(LED, OUTPUT);
-	
-	digitalWrite(LED, HIGH);  // On
-	delay(500); // ms
-	digitalWrite(LED, LOW);	  // Off
-	delay(500);
+	//std::cout << "test flash" << std::endl;
+	//wiringPiSetupSys();
+	//wiringPiSetupGpio();
+	//wiringPiSetupSys();
+	//
+	//pinMode(LED, OUTPUT);
+	//
+	//digitalWrite(LED, HIGH);  // On
+	//delay(500); // ms
+	//digitalWrite(LED, LOW);	  // Off
+	//delay(500);
 	// End of testing code
 
 

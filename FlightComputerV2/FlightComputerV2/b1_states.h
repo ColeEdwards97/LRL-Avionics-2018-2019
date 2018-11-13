@@ -8,7 +8,7 @@
 // University:    California State Polytechnic University, Pomona
 // Author:        Cole Edwards
 // Date Created:  23 October 2018
-// Date Revised:  06 November 2018
+// Date Revised:  13 November 2018
 // File Name:     b1_states.h
 // Description:   Constructor file for b1_states.cpp.  Defines the possible
 //                states, events, transitions, and transition functions for the
@@ -27,6 +27,7 @@
 #include <cstdio>
 #include "b1_hardware.h"
 #include "pinout.h"
+
 
 class b1_states {
 
@@ -84,7 +85,14 @@ public:
 		int wait_ps2;
 	} MPS_CONFIG;
 
-	b1_states::MPS_CONFIG conf[1] {
+	b1_states::MPS_CONFIG conf[2] {
+		{ b1_hardware::sol_state::OPEN,
+		b1_hardware::sol_state::CLOSED,
+		b1_hardware::vent_state::OPEN,
+		b1_hardware::vent_state::CLOSED,
+		b1_hardware::pyro_state::INTACT,
+		b1_hardware::pyro_state::INTACT,
+		0,0,0,0,0,0 },
 		{ b1_hardware::sol_state::CLOSED,
 		b1_hardware::sol_state::CLOSED,
 		b1_hardware::vent_state::CLOSED,
@@ -101,10 +109,11 @@ public:
 		b1_state(*fn)(MPS_CONFIG);
 	} tTransition;
 
+	// TODO: consider adding next state to struct...
 	b1_states::tTransition trans[3] = {
-		{ ST_ANY, EV_FULL_TEMP, conf[1], fn1 },
+		{ ST_ANY, EV_FULL_TEMP, conf[0], fn1 },
 		{ ST_ANY, EV_OVR_PR, conf[1], fn2 },
-		{ ST_ANY, EV_NOMINAL, conf[1], fn2 }
+		{ ST_ANY, EV_NOMINAL, conf[0], fn2 }
 	};
 
 	// METHODS

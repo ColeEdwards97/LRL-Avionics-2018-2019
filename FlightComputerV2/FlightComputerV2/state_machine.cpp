@@ -8,7 +8,7 @@
 // University:    California State Polytechnic University, Pomona
 // Author:        Cole Edwards
 // Date Created:  23 October 2018
-// Date Revised:  06 November 2018
+// Date Revised:  13 November 2018
 // File Name:     state_machine.cpp
 // Description:   Source file for state_machine.h.  Defines the overall behavior
 //                of the Flight Computer.  Essentially, the state machine is the
@@ -34,6 +34,8 @@
 state_machine::state_machine() {
 
 	// state machine initialization
+	isReadyToPressurize = false;
+	isReadyToLaunch = false;
 
 }
 

@@ -8,7 +8,7 @@
 // University:    California State Polytechnic University, Pomona
 // Author:        Cole Edwards
 // Date Created:  06 November 2018
-// Date Revised:  06 November 2018
+// Date Revised:  13 November 2018
 // File Name:     pinout.h
 // Description:   Constructor file for pinout.cpp.  Defines all the pins and
 //                what state they should be exported to.  Also aliases the pin
@@ -17,7 +17,12 @@
 // GENERAL TODOS
 //
 // INCLUDES
-#pragma once
+#ifndef PINOUT_H
+#define PINOUT_H
+
+#include <iostream>
+#include <string>
+
 #include <wiringPi.h>
 #include <wiringPiI2C.h>
 #include <wiringPiSPI.h>
@@ -27,12 +32,12 @@
 // ENUMS
 enum PIN_ALIAS {
 	// TODO: Set the actual pin value here
-	PIN_SOL_1 = 1,
-	PIN_SOL_2 = 2,
-	PIN_VENT_1 = 3,
-	PIN_VENT_2 = 4,
-	PIN_PYRO_1 = 5,
-	PIN_PYRO_2 = 6
+	PIN_SOL_1 = 5,
+	PIN_SOL_2 = 6,
+	PIN_VENT_1 = 13,
+	PIN_VENT_2 = 16,
+	PIN_PYRO_1 = 19,
+	PIN_PYRO_2 = 20
 };
 
 // STRUCTS
@@ -41,7 +46,7 @@ typedef struct {
 	int mode;	// 0:input, 1:output
 } pins;
 
-pins pin_init[6] = {
+static pins pin_init[6] = {
 	{PIN_SOL_1,OUTPUT},
 	{PIN_SOL_2,OUTPUT},
 	{PIN_VENT_1,OUTPUT},
@@ -51,6 +56,8 @@ pins pin_init[6] = {
 };
 
 // METHODS
-
 int pin_count(void);
 int initialize_pins(void);
+int cleanup(void);
+
+#endif

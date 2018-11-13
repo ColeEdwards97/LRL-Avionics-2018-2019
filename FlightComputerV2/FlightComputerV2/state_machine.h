@@ -8,7 +8,7 @@
 // University:    California State Polytechnic University, Pomona
 // Author:        Cole Edwards
 // Date Created:  23 October 2018
-// Date Revised:  06 November 2018
+// Date Revised:  13 November 2018
 // File Name:     state_machine.h
 // Description:   Constructor file for state_machine.cpp.  Initializes the 
 //                methods to be used in the state machine.  Implements the 
@@ -69,5 +69,8 @@ private:
 
 	// VARIABLES
 	std::queue<b1_states::b1_event> eventQueue;
+
+	bool isReadyToPressurize;
+	bool isReadyToLaunch;
 
 };

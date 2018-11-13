@@ -8,7 +8,7 @@
 // University:    California State Polytechnic University, Pomona
 // Author:        Cole Edwards
 // Date Created:  23 October 2018
-// Date Revised:  06 November 2018
+// Date Revised:  13 November 2018
 // File Name:     b1_hardware.cpp
 // Description:   Source file for b1_hardware.h.  Defines the functions to get 
 //                and set a hardware's state.
@@ -34,9 +34,23 @@ b1_hardware::b1_hardware(int pin, b1_hardware::hardware type) {
 
 	gpio_pin = pin;
 	hardwareType = type;
-	currentSolState = sol_state::CLOSED;
-	currentVentState = vent_state::CLOSED;
-	currentPyroState = pyro_state::INTACT;
+	
+	switch (type)
+	{
+	case b1_hardware::hardware::NONE:
+		break;
+	case b1_hardware::hardware::SOLENOID:
+		currentSolState = sol_state::CLOSED;
+		break;
+	case b1_hardware::hardware::VENT:
+		currentVentState = vent_state::CLOSED;
+		break;
+	case b1_hardware::hardware::PYRO:
+		currentPyroState = pyro_state::INTACT;
+		break;
+	default:
+		break;
+	}
 
 }
 
@@ -65,8 +79,7 @@ void b1_hardware::setHardwareType(b1_hardware::hardware newHardware) {
 }
 void b1_hardware::setSolState(b1_hardware::sol_state newState) {
 
-	// code for setting state
-	// switch statement?
+	std::cout << "switching states" << std::endl;
 
 	switch (newState)
 	{
@@ -74,12 +87,12 @@ void b1_hardware::setSolState(b1_hardware::sol_state newState) {
 		// report error
 		break;
 	case b1_hardware::sol_state::CLOSED:
-		// set GPIO pin to low state
-		digitalWrite(gpio_pin, LOW);
-		break;
-	case b1_hardware::sol_state::OPEN:
 		// set GPIO pin to high state
 		digitalWrite(gpio_pin, HIGH);
+		break;
+	case b1_hardware::sol_state::OPEN:
+		// set GPIO pin to low state
+		digitalWrite(gpio_pin, LOW);
 		break;
 	default:
 		break;
@@ -89,19 +102,18 @@ void b1_hardware::setSolState(b1_hardware::sol_state newState) {
 }
 void b1_hardware::setVentState(b1_hardware::vent_state newState) {
 
-	// code for setting state
-	// switch statement?
-
 	switch (newState)
 	{
 	case b1_hardware::vent_state::ERROR:
 		// report error
 		break;
 	case b1_hardware::vent_state::CLOSED:
-		// set GPIO pin to low state
+		// set GPIO pin to high state
+		digitalWrite(gpio_pin, HIGH);
 		break;
 	case b1_hardware::vent_state::OPEN:
-		// set GPIO pin to high state
+		// set GPIO pin to low state
+		digitalWrite(gpio_pin, LOW);
 		break;
 	default:
 		break;
@@ -110,9 +122,6 @@ void b1_hardware::setVentState(b1_hardware::vent_state newState) {
 	currentVentState = newState;
 }
 void b1_hardware::setPyroState(b1_hardware::pyro_state newState) {
-
-	// code for setting state
-	// switch statement?
 
 	switch (newState)
 	{

@@ -8,7 +8,7 @@
 // University:    California State Polytechnic University, Pomona
 // Author:        Cole Edwards
 // Date Created:  23 October 2018
-// Date Revised:  06 November 2018
+// Date Revised:  13 November 2018
 // File Name:     b1_hardware.h
 // Description:   Constructor file for b1_hardware.cpp.  Defines the Bronco
 //                One's hardware and their possible states.
@@ -33,12 +33,12 @@ public:
 	enum class sol_state {
 		ERROR = -1,
 		CLOSED = 0,
-		OPEN = 1,
+		OPEN = 1
 	};
 	enum class vent_state {
 		ERROR = -1,
 		CLOSED = 0,
-		OPEN = 1,
+		OPEN = 1
 	};
 	enum class pyro_state {
 		ERROR = -1,

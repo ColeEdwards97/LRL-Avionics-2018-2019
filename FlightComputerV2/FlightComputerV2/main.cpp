@@ -8,7 +8,7 @@
 // University:    California State Polytechnic University, Pomona
 // Author:        Cole Edwards, Mark Murphy
 // Date Created:  23 October 2018
-// Date Revised:  06 November 2018
+// Date Revised:  13 November 2018
 // File Name:     main.cpp
 // Description:   The main file.  Everything on the Flight Computer is called
 //                from this file.  It initializes the Flight Computer and
@@ -32,11 +32,9 @@
 #include <chrono>
 #include "state_machine.h"
 #include "input.h"
-#include "pinout.h"
 
 // INSTANCE THE STATE MACHINE
 state_machine& sm = state_machine::getInstance();
-
 
 // TODO: create threads for input
 // TODO: add code to gather output from users and hardware
@@ -63,10 +61,6 @@ int main() {
 	// End of testing code
 
 
-
-
-
-
 	std::cout << "[INFO][main.cpp] Starting Flight Computer" << std::endl;
 
 	// start the thread that gathers system inputs
@@ -79,6 +73,11 @@ int main() {
 
 	// wait until input thread finishes
 	th_INPUT.join();
+
+	int i;
+	std::cin >> i;
+
+	cleanup();
 
 	return 0;
 

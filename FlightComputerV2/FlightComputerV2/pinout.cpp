@@ -18,7 +18,18 @@
 // INCLUDES
 #include "pinout.h"
 
-// Initialize the pins to the appropriate mode
+// STRUCTS
+static pins pin_init[6] = {
+	{ PIN_SOL_1,  OUTPUT, HIGH },
+	{ PIN_SOL_2,  OUTPUT, HIGH },
+	{ PIN_VENT_1, OUTPUT, HIGH },
+	{ PIN_VENT_2, OUTPUT, HIGH },
+	{ PIN_PYRO_1, OUTPUT, HIGH },
+	{ PIN_PYRO_2, OUTPUT, HIGH }
+};
+
+// METHODS
+// initialize pins
 int initialize_pins() {
 
 	std::cout << "exporting pins" << std::endl;
@@ -28,27 +39,27 @@ int initialize_pins() {
 	int i;
 	for (i = 0; i < pin_count(); i++) {
 	
-		pinMode(pin_init[i].pin, pin_init[i].mode);
+		pinMode(pin_init[i].pin, pin_init[i].mode);	// initialize the pins with the corresponding pin mode
+		digitalWrite(pin_init[i].pin, pin_init[i].state); // set the default state of the pin
 	
 	}
 
 	return 0;
 
 }
-
+// cleanup pins
 int cleanup(void) {
 
 	int i;
 	for (i = 0; i < pin_count(); i++) {
 
 		digitalWrite(pin_init[i].pin, LOW);
-
+		// TODO: this will open all valves... should we open them all at the end?
 	}
 
 	return 0;
 
 }
-
 // Count the number of pin configurations to set
 int pin_count(void) {
 	return (sizeof(pin_init) / sizeof(*pin_init));

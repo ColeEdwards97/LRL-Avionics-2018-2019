@@ -18,7 +18,6 @@
 //
 // INCLUDES
 #pragma once
-#include <wiringPi.h>
 #include <iostream>	
 #include <string>
 #include <unistd.h>
@@ -47,15 +46,14 @@ public:
 	void pushEvent(b1_states::b1_event pushEvent);
 	std::queue<b1_states::b1_event> getEventQueue(void);
 
-	// STRUCTS
-	struct b1_status {
-		static b1_states::b1_state currentState;
-		static b1_states::b1_event lastEvent;
-	};
+	bool isReadyToPressurize(void);
+	bool isReadyToLaunch(void);
 
 	// GETTERS
-	b1_status getCurrentStatus(void);
-
+	b1_states::b1_state getCurrentState(void);
+	b1_states::b1_event getCurrentEvent(void);
+	void setCurrentState(b1_states::b1_state);
+	void setCurrentEvent(b1_states::b1_event);
 
 private:
 
@@ -70,7 +68,10 @@ private:
 	// VARIABLES
 	std::queue<b1_states::b1_event> eventQueue;
 
-	bool isReadyToPressurize;
-	bool isReadyToLaunch;
+	b1_states::b1_state currentState;
+	b1_states::b1_event currentEvent;
+
+	bool ready_pressure;
+	bool ready_launch;
 
 };

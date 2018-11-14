@@ -77,9 +77,11 @@ void b1_hardware::setHardwareType(b1_hardware::hardware newHardware) {
 		hardwareType = newHardware;
 	}
 }
-void b1_hardware::setSolState(b1_hardware::sol_state newState) {
 
-	std::cout << "switching states" << std::endl;
+// STATE SETTERS
+
+// ... SOLENOIDS ... //
+void b1_hardware::setSolState(b1_hardware::sol_state newState) {
 
 	switch (newState)
 	{
@@ -100,6 +102,7 @@ void b1_hardware::setSolState(b1_hardware::sol_state newState) {
 
 	currentSolState = newState;
 }
+// ... VENTS ... //
 void b1_hardware::setVentState(b1_hardware::vent_state newState) {
 
 	switch (newState)
@@ -121,6 +124,7 @@ void b1_hardware::setVentState(b1_hardware::vent_state newState) {
 
 	currentVentState = newState;
 }
+// ... PYROS ... //
 void b1_hardware::setPyroState(b1_hardware::pyro_state newState) {
 
 	switch (newState)
@@ -132,7 +136,8 @@ void b1_hardware::setPyroState(b1_hardware::pyro_state newState) {
 		// do nothing
 		break;
 	case b1_hardware::pyro_state::BURST:
-		// set GPIO pin to high a few times to ensure pyro is burst
+		// set GPIO pin to low a few times to ensure pyro is burst
+		digitalWrite(gpio_pin, LOW);
 		break;
 	default:
 		break;

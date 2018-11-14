@@ -27,7 +27,7 @@
 #include <chrono>
 #include "b1_states.h"
 #include "state_machine.h"
-#include "ads1115.h"
+#include <ads1115.h>
 
 int gather_input(void);
 int gather_PT_input(void);

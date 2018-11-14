@@ -19,7 +19,11 @@
 // INCLUDES
 #include "input.h"
 
+
+// METHODS
 int gather_input() {
+
+	gather_PT_input();
 
 	// get the state machine so we can push events to it
 	state_machine& sm = state_machine::getInstance();
@@ -53,5 +57,28 @@ int gather_input() {
 }
 
 int gather_PT_input(void) {
-	return 0;
-}
+
+	int pinbase = 100;
+	int i2cloc = 0x48;
+	int a2dval;
+	float a2dvol;
+	float vref = 5;
+	int a2dchannel = 0;
+
+	std::cout << "gathering pt data..." << std::endl;
+
+	if (ads1115Setup(pinbase, i2cloc) < 0) {
+		std::cout << "failed setting up I2C device" << std::endl;
+		return -1;
+	}
+	else {
+		for (int i = 0; i < 10; i++) {
+			a2dval = analogRead(pinbase + a2dchannel);
+			a2dvol = a2dval * vref / 4096;
+			std::cout << "value: " << a2dval << std::endl;
+			std::cout << "voltatge: " << a2dvol << std::endl;
+		}
+		return 0;
+	}
+
+};

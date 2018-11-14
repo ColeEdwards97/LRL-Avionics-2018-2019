@@ -44,16 +44,8 @@ enum PIN_ALIAS {
 typedef struct {
 	int pin;	// BCM Pin
 	int mode;	// 0:input, 1:output
+	int state;  // 0:LOW, 1:HIGH
 } pins;
-
-static pins pin_init[6] = {
-	{PIN_SOL_1,OUTPUT},
-	{PIN_SOL_2,OUTPUT},
-	{PIN_VENT_1,OUTPUT},
-	{PIN_VENT_2,OUTPUT},
-	{PIN_PYRO_1,OUTPUT},
-	{PIN_PYRO_2,OUTPUT}
-};
 
 // METHODS
 int pin_count(void);

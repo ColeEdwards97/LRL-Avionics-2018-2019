@@ -111,17 +111,12 @@ public:
 
 	// TODO: consider adding next state to struct...
 	b1_states::tTransition trans[3] = {
-		{ ST_ANY, EV_FULL_TEMP, conf[0], fn1 },
-		{ ST_ANY, EV_OVR_PR, conf[1], fn2 },
-		{ ST_ANY, EV_NOMINAL, conf[0], fn2 }
+		{ ST_ANY, EV_FULL_TEMP,	conf[0], fn1 },
+		{ ST_ANY, EV_OVR_PR,	conf[1], fn2 },
+		{ ST_ANY, EV_NOMINAL,	conf[0], fn2 }
 	};
 
 	// METHODS
-	b1_state getState(void);
-	b1_event getEvent(void);
-	void setState(b1_state newState);
-	void setEvent(b1_event newEvent);
-
 	static b1_state fn1(MPS_CONFIG);
 	static b1_state fn2(MPS_CONFIG);
 

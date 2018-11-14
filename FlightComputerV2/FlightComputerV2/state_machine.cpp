@@ -34,8 +34,11 @@
 state_machine::state_machine() {
 
 	// state machine initialization
-	isReadyToPressurize = false;
-	isReadyToLaunch = false;
+	currentState = b1_states::b1_state::ST_INIT;
+	currentEvent = b1_states::b1_event::EV_NOMINAL;
+
+	ready_pressure = false;
+	ready_launch = false;
 
 }
 
@@ -46,9 +49,8 @@ void state_machine::run(void) {
 	std::cout << "starting state machine...\n";
 
 	// initialized values
-	int i;
-	b1_states::b1_state state = states.getState();
-	b1_states::b1_event event = states.getEvent();
+	b1_states::b1_state state = currentState;
+	b1_states::b1_event event = currentEvent;
 
 	// while currentState != ST_TERM
 	//		while !eventQueue.empty()
@@ -67,12 +69,10 @@ void state_machine::run(void) {
 			std::cout << "Queue has " << eventQueue.size() << " member(s)!\n";
 			event = eventQueue.front();
 
-			// update the status variable - only for data collection
-			//b1_status::currentState = state;
-			//b1_status::lastEvent = event;
-			// results in errors
+			setCurrentState(state);
+			setCurrentEvent(event);
 
-			for (i = 0; i < states.transCount(); i++) {
+			for (int i = 0; i < states.transCount(); i++) {
 
 				if ((state == states.trans[i].st) || (states.ST_ANY == states.trans[i].st)) {
 
@@ -96,12 +96,28 @@ void state_machine::run(void) {
 std::queue<b1_states::b1_event> state_machine::getEventQueue(void) {
 	return eventQueue;
 };
-state_machine::b1_status state_machine::getCurrentStatus(void) {
-	state_machine::b1_status status;
-	return status;
+b1_states::b1_state state_machine::getCurrentState(void) {
+	return currentState;
 };
+b1_states::b1_event state_machine::getCurrentEvent(void) {
+	return currentEvent;
+}
+
+// SETTERS
+void state_machine::setCurrentState(b1_states::b1_state newState) {
+	currentState = newState;
+}
+void state_machine::setCurrentEvent(b1_states::b1_event newEvent) {
+	currentEvent = newEvent;
+}
 
 // METHODS
 void state_machine::pushEvent(b1_states::b1_event pushEvent) {
 	eventQueue.push(pushEvent);
 };
+bool state_machine::isReadyToPressurize(void) {
+	return ready_pressure;
+}
+bool state_machine::isReadyToLaunch(void) {
+	return ready_launch;
+}

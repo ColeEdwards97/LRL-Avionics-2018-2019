@@ -46,21 +46,6 @@ int main() {
 
 	initialize_pins();
 
-	// CODE FOR TESTING
-	//std::cout << "test flash" << std::endl;
-	//wiringPiSetupSys();
-	//wiringPiSetupGpio();
-	//wiringPiSetupSys();
-	//
-	//pinMode(LED, OUTPUT);
-	//
-	//digitalWrite(LED, HIGH);  // On
-	//delay(500); // ms
-	//digitalWrite(LED, LOW);	  // Off
-	//delay(500);
-	// End of testing code
-
-
 	std::cout << "[INFO][main.cpp] Starting Flight Computer" << std::endl;
 
 	// start the thread that gathers system inputs
@@ -74,9 +59,11 @@ int main() {
 	// wait until input thread finishes
 	th_INPUT.join();
 
+	// stop program and wait for input
 	int i;
 	std::cin >> i;
-
+	
+	// cleanup the gpio pins
 	cleanup();
 
 	return 0;

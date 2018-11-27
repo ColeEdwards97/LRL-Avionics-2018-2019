@@ -8,7 +8,7 @@
 // University:    California State Polytechnic University, Pomona
 // Author:        Cole Edwards, Mark Murphy
 // Date Created:  23 October 2018
-// Date Revised:  13 November 2018
+// Date Revised:  26 November 2018
 // File Name:     main.cpp
 // Description:   The main file.  Everything on the Flight Computer is called
 //                from this file.  It initializes the Flight Computer and
@@ -17,7 +17,6 @@
 //                at the same time, collecting input from various sources.  The
 //                Flight Computer can then be updated in real time allowing 
 //                multiple tasks to run simultaneously.
-//
 //
 // GENERAL TODOS
 // TODO: write proper initialization code w/ error handling
@@ -39,28 +38,28 @@ state_machine& sm = state_machine::getInstance();
 // TODO: create threads for input
 // TODO: add code to gather output from users and hardware
 //	// some list of inputs to get based on importance
-//	// data collection should be run in a separate thread
+//	// data collection should be run in a separate thread(s)
 //	// this function should just pull the latest value from the thread
-//	// ***consider having another thread notify this thread of a change in event
 int main() {
 
 	initialize_pins();
 
 	std::cout << "[INFO][main.cpp] Starting Flight Computer" << std::endl;
 
-	// start the thread that gathers system inputs
+	// start the thread(s) that gathers system inputs
 	std::thread th_INPUT(gather_input);
+	std::thread th_USER_INPUT(gather_user_input);
 
 	// run the finite state machine
-	// add a return in state machine for status
-	// while(status)...
 	sm.run();
 
-	// wait until input thread finishes
+	// wait until input thread(s) finishes
 	th_INPUT.join();
+	th_USER_INPUT.join();
 
 	// stop program and wait for input
 	int i;
+	std::cout << "waiting to end program..." << std::endl;
 	std::cin >> i;
 	
 	// cleanup the gpio pins

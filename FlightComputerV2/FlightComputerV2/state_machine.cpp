@@ -8,7 +8,7 @@
 // University:    California State Polytechnic University, Pomona
 // Author:        Cole Edwards
 // Date Created:  23 October 2018
-// Date Revised:  13 November 2018
+// Date Revised:  26 November 2018
 // File Name:     state_machine.cpp
 // Description:   Source file for state_machine.h.  Defines the overall behavior
 //                of the Flight Computer.  Essentially, the state machine is the
@@ -37,6 +37,7 @@ state_machine::state_machine() {
 	currentState = b1_states::b1_state::ST_INIT;
 	currentEvent = b1_states::b1_event::EV_NOMINAL;
 
+	is_running = false;
 	ready_pressure = false;
 	ready_launch = false;
 
@@ -45,8 +46,9 @@ state_machine::state_machine() {
 // RUN MAIN LOOP
 void state_machine::run(void) {
 
-	// main loop code
-	std::cout << "starting state machine...\n";
+	is_running = true;
+
+	std::cout << "starting state machine..." << std::endl;
 
 	// initialized values
 	b1_states::b1_state state = currentState;
@@ -66,7 +68,7 @@ void state_machine::run(void) {
 
 		if (!eventQueue.empty()) {
 
-			std::cout << "Queue has " << eventQueue.size() << " member(s)!\n";
+			std::cout << "Queue has " << eventQueue.size() << " member(s)!" << std::endl;
 			event = eventQueue.front();
 
 			setCurrentState(state);
@@ -89,6 +91,8 @@ void state_machine::run(void) {
 		}
 
 	}
+
+	is_running = false;
 
 }
 
@@ -115,6 +119,9 @@ void state_machine::setCurrentEvent(b1_states::b1_event newEvent) {
 void state_machine::pushEvent(b1_states::b1_event pushEvent) {
 	eventQueue.push(pushEvent);
 };
+bool state_machine::isRunning(void) {
+	return is_running;
+}
 bool state_machine::isReadyToPressurize(void) {
 	return ready_pressure;
 }

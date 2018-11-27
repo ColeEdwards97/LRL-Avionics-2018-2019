@@ -8,31 +8,34 @@
 // University:    California State Polytechnic University, Pomona
 // Author:        Cole Edwards
 // Date Created:  23 October 2018
-// Date Revised:  23 October 2018
+// Date Revised:  26 November 2018
 // File Name:     input.cpp
 // Description:   Source file for input.h.  Defines functions that will be
 //                called by threads to recieve various input types
 //
 // GENERAL TODOS
 // TODO: add functions for all possible input types
+// TODO: consider spawning threads after state machine has started
 //
 // INCLUDES
 #include "input.h"
 
 
 // METHODS
+// TODO: test method. remove later
 int gather_input() {
-
-	gather_PT_input();
 
 	// get the state machine so we can push events to it
 	state_machine& sm = state_machine::getInstance();
 
 	// wait for the state machine to start
-	// TODO: add a check for this
 	std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
-	// TODO: replace this with actual pressure transducer reading code
+	if (!sm.isRunning) {
+		// TODO: add a try statement?
+		return -1;
+	}
+
 	int i = 0;
 	while (i < 10) {
 
@@ -56,6 +59,7 @@ int gather_input() {
 
 }
 
+// TODO: put into its own thread
 int gather_PT_input(void) {
 
 	int pinbase = 100;
@@ -81,4 +85,35 @@ int gather_PT_input(void) {
 		return 0;
 	}
 
-};
+}
+
+// TODO: put into its own thread
+int gather_user_input(void) {
+
+	// get the state machine so we can push events to it
+	state_machine& sm = state_machine::getInstance();
+
+	// wait for the state machine to start
+	std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
+	if (!sm.isRunning) {
+		// TODO: add a try statement?
+		return -1;
+	}
+
+	int input;
+
+	for (int i = 0; i < 10; i++) {
+
+		std::cout << "next event:" << std::endl;
+		std::cin >> input;
+
+		b1_states::b1_event event = static_cast<b1_states::b1_event>(input);
+
+		sm.pushEvent(event);
+
+	}
+
+	return 0;
+
+}

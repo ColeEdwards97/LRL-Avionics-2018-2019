@@ -33,17 +33,20 @@ public:
 	enum class sol_state {
 		ERROR = -1,
 		CLOSED = 0,
-		OPEN = 1
+		OPEN = 1,
+		HOLD = 2
 	};
 	enum class vent_state {
 		ERROR = -1,
 		CLOSED = 0,
-		OPEN = 1
+		OPEN = 1,
+		HOLD = 2
 	};
 	enum class pyro_state {
 		ERROR = -1,
 		INTACT = 0,
-		BURST = 1
+		BURST = 1,
+		HOLD = 2
 	};
 
 	// CONSTRUCTOR

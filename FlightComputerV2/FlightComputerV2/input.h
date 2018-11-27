@@ -8,7 +8,7 @@
 // University:    California State Polytechnic University, Pomona
 // Author:        Cole Edwards
 // Date Created:  23 October 2018
-// Date Revised:  23 October 2018
+// Date Revised:  26 November 2018
 // File Name:     input.h
 // Description:   Constructor file for input.cpp.  Defines functions that will
 //                be called by threads to recieve various input types
@@ -31,4 +31,4 @@
 
 int gather_input(void);
 int gather_PT_input(void);
-// int gather_USER_input(void);
+int gather_user_input(void);

@@ -8,7 +8,7 @@
 // University:    California State Polytechnic University, Pomona
 // Author:        Cole Edwards
 // Date Created:  23 October 2018
-// Date Revised:  13 November 2018
+// Date Revised:  29 November 2018
 // File Name:     b1_states.cpp
 // Description:   Source file for b1_states.h.  Defines the functions to get 
 //                and set the state of the Bronco One.
@@ -46,8 +46,7 @@ int b1_states::transCount(void) {
 // B1 STATE FUNCTIONS
 
 // ... fn1 ... //
-b1_states::b1_state b1_states::fn1(b1_states::MPS_CONFIG conf) {
-	std::cout << "ST_TERM\n";
+b1_states::b1_state b1_states::fn1(b1_states::MPS_CONFIG conf, b1_states::b1_state new_state) {
 
 	// wait conf.wait1
 	sol_1->setSolState(conf.ss1);
@@ -62,11 +61,12 @@ b1_states::b1_state b1_states::fn1(b1_states::MPS_CONFIG conf) {
 	// wait
 	pyro_2->setPyroState(conf.ps2);
 
-	return ST_TERM;
+	std::cout << static_cast<int>(new_state) << std::endl;
+
+	return new_state;
 }
 // ... fn2 ... //
-b1_states::b1_state b1_states::fn2(b1_states::MPS_CONFIG conf) {
-	std::cout << "ST_CRUISE\n";
+b1_states::b1_state b1_states::fn2(b1_states::MPS_CONFIG conf, b1_states::b1_state new_state) {
 
 	// wait conf.wait1
 	sol_1->setSolState(conf.ss1);
@@ -81,5 +81,7 @@ b1_states::b1_state b1_states::fn2(b1_states::MPS_CONFIG conf) {
 	// wait
 	pyro_2->setPyroState(conf.ps2);
 
-	return ST_CRUISE;
+	std::cout << static_cast<int>(new_state) << std::endl;
+
+	return new_state;
 }

@@ -8,13 +8,12 @@
 // University:    California State Polytechnic University, Pomona
 // Author:        Cole Edwards
 // Date Created:  23 October 2018
-// Date Revised:  13 November 2018
+// Date Revised:  29 November 2018
 // File Name:     b1_hardware.cpp
 // Description:   Source file for b1_hardware.h.  Defines the functions to get 
 //                and set a hardware's state.
 //
 // GENERAL TODOS
-// TODO: Finish implementing pin state switching
 //
 // INCLUDES
 #include "b1_hardware.h"
@@ -88,6 +87,9 @@ void b1_hardware::setSolState(b1_hardware::sol_state newState) {
 	case b1_hardware::sol_state::ERROR:
 		// report error
 		break;
+	case b1_hardware::sol_state::HOLD:
+		// make no changes
+		break;
 	case b1_hardware::sol_state::CLOSED:
 		// set GPIO pin to high state
 		digitalWrite(gpio_pin, HIGH);
@@ -110,6 +112,9 @@ void b1_hardware::setVentState(b1_hardware::vent_state newState) {
 	case b1_hardware::vent_state::ERROR:
 		// report error
 		break;
+	case b1_hardware::vent_state::HOLD:
+		// make no changes
+		break;
 	case b1_hardware::vent_state::CLOSED:
 		// set GPIO pin to high state
 		digitalWrite(gpio_pin, HIGH);
@@ -131,6 +136,9 @@ void b1_hardware::setPyroState(b1_hardware::pyro_state newState) {
 	{
 	case b1_hardware::pyro_state::ERROR:
 		// report error
+		break;
+	case b1_hardware::pyro_state::HOLD:
+		// make no changes
 		break;
 	case b1_hardware::pyro_state::INTACT:
 		// do nothing

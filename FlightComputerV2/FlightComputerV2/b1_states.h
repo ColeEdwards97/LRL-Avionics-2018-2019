@@ -8,7 +8,7 @@
 // University:    California State Polytechnic University, Pomona
 // Author:        Cole Edwards
 // Date Created:  23 October 2018
-// Date Revised:  13 November 2018
+// Date Revised:  29 November 2018
 // File Name:     b1_states.h
 // Description:   Constructor file for b1_states.cpp.  Defines the possible
 //                states, events, transitions, and transition functions for the
@@ -48,12 +48,12 @@ public:
 		ST_INIT = 0,
 		ST_IDLE = 1,
 		ST_FILL = 2,
-		ST_DRAIN = 3,
-		ST_IGNITION = 4,
-		ST_CRUISE = 5,
-		ST_BURN_OUT = 6,
+		ST_PRESSURIZE = 3,
+		ST_READY2LAUNCH = 4,
+		ST_LAUNCH = 5,
+		ST_CRUISE = 6,
 		ST_VENT = 7,
-		ST_EMERGENCY = 8001,
+		ST_EMERGENCY = 800,
 		ST_TERM = 9999
 
 	};
@@ -62,10 +62,14 @@ public:
 
 		EV_ANY = -1,
 		EV_NOMINAL = 0,
-		EV_OVR_PR = 1,
-		EV_USR_FILL = 2,
-		EV_USR_LAUNCH = 3,
-		EV_FULL_TEMP = 299
+		EV_START = 1,
+		EV_START_FILL = 2,
+		EV_STOP_FILL = 3,
+		EV_PRESSURIZED = 4,
+		EV_LAUNCH = 5,
+		EV_BURNOUT = 6,
+		EV_OVR_PR = 700,
+		EV_EMERG = 800
 
 	};
 
@@ -85,40 +89,92 @@ public:
 		int wait_ps2;
 	} MPS_CONFIG;
 
-	b1_states::MPS_CONFIG conf[2] {
-		{ b1_hardware::sol_state::OPEN,
-		b1_hardware::sol_state::CLOSED,
-		b1_hardware::vent_state::OPEN,
-		b1_hardware::vent_state::CLOSED,
-		b1_hardware::pyro_state::INTACT,
-		b1_hardware::pyro_state::INTACT,
-		0,0,0,0,0,0 },
+	b1_states::MPS_CONFIG conf[7] {
+		// INIT, IDLE, FILLED
 		{ b1_hardware::sol_state::CLOSED,
 		b1_hardware::sol_state::CLOSED,
 		b1_hardware::vent_state::CLOSED,
 		b1_hardware::vent_state::CLOSED,
 		b1_hardware::pyro_state::INTACT,
 		b1_hardware::pyro_state::INTACT,
+		0,0,0,0,0,0 },
+		// FILL
+		{ b1_hardware::sol_state::CLOSED,
+		b1_hardware::sol_state::CLOSED,
+	    b1_hardware::vent_state::OPEN,
+		b1_hardware::vent_state::OPEN,
+		b1_hardware::pyro_state::INTACT,
+		b1_hardware::pyro_state::INTACT,
+		0,0,0,0,0,0	},
+		// PRESSURIZE
+		{ b1_hardware::sol_state::OPEN,
+		b1_hardware::sol_state::OPEN,
+		b1_hardware::vent_state::CLOSED,
+		b1_hardware::vent_state::CLOSED,
+		b1_hardware::pyro_state::INTACT,
+		b1_hardware::pyro_state::INTACT,
+		0,0,0,0,0,0 },
+		// LAUNCH
+		{ b1_hardware::sol_state::OPEN,
+		b1_hardware::sol_state::OPEN,
+		b1_hardware::vent_state::CLOSED,
+		b1_hardware::vent_state::CLOSED,
+		b1_hardware::pyro_state::BURST,
+		b1_hardware::pyro_state::BURST,
+		0,0,0,0,0,0 },
+		// VENT
+		{ b1_hardware::sol_state::HOLD,
+		b1_hardware::sol_state::HOLD,
+		b1_hardware::vent_state::OPEN,
+		b1_hardware::vent_state::OPEN,
+		b1_hardware::pyro_state::HOLD,
+		b1_hardware::pyro_state::HOLD,
+		0,0,0,0,0,0 },
+		// HOLD
+		{ b1_hardware::sol_state::HOLD,
+		b1_hardware::sol_state::HOLD,
+		b1_hardware::vent_state::HOLD,
+		b1_hardware::vent_state::HOLD,
+		b1_hardware::pyro_state::HOLD,
+		b1_hardware::pyro_state::HOLD,
+		0,0,0,0,0,0 },
+		// DRAIN
+		{ b1_hardware::sol_state::OPEN,
+		b1_hardware::sol_state::OPEN,
+		b1_hardware::vent_state::OPEN,
+		b1_hardware::vent_state::OPEN,
+		b1_hardware::pyro_state::BURST,
+		b1_hardware::pyro_state::BURST,
 		0,0,0,0,0,0 }
+
 	};
 
 	typedef struct {
 		b1_state st;
 		b1_event ev;
 		MPS_CONFIG conf;
-		b1_state(*fn)(MPS_CONFIG);
+		b1_state new_st;
+		b1_state(*fn)(MPS_CONFIG, b1_state);
 	} tTransition;
 
-	// TODO: consider adding next state to struct...
-	b1_states::tTransition trans[3] = {
-		{ ST_ANY, EV_FULL_TEMP,	conf[0], fn1 },
-		{ ST_ANY, EV_OVR_PR,	conf[1], fn2 },
-		{ ST_ANY, EV_NOMINAL,	conf[0], fn2 }
+	b1_states::tTransition trans[10] = {
+		// TODO: create appropriate state functions
+		{ ST_INIT,			EV_START,		conf[1],	ST_IDLE,			fn1 },
+		{ ST_IDLE,			EV_START_FILL,	conf[2],	ST_FILL,			fn1 },
+		{ ST_FILL,			EV_STOP_FILL,	conf[3],	ST_PRESSURIZE,		fn1	},
+		{ ST_PRESSURIZE,	EV_PRESSURIZED, conf[3],	ST_READY2LAUNCH,	fn1 },
+		{ ST_READY2LAUNCH,	EV_LAUNCH,		conf[4],	ST_LAUNCH,			fn1 },
+		{ ST_LAUNCH,		EV_NOMINAL,		conf[7],	ST_CRUISE,			fn1	},
+		{ ST_CRUISE,		EV_BURNOUT,		conf[5],	ST_TERM,			fn1 },
+		{ ST_ANY,			EV_NOMINAL,     conf[6],    currentState,		fn1 },	// HOLD
+		{ ST_ANY,			EV_OVR_PR,		conf[5],	currentState,		fn1 },	// VENT
+		{ ST_ANY,			EV_EMERG,		conf[7],	ST_EMERGENCY,		fn1 }	// DRAIN
+
 	};
 
 	// METHODS
-	static b1_state fn1(MPS_CONFIG);
-	static b1_state fn2(MPS_CONFIG);
+	static b1_state fn1(MPS_CONFIG, b1_state);
+	static b1_state fn2(MPS_CONFIG, b1_state);
 
 	int transCount(void);
 

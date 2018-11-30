@@ -8,7 +8,7 @@
 // University:    California State Polytechnic University, Pomona
 // Author:        Cole Edwards
 // Date Created:  23 October 2018
-// Date Revised:  26 November 2018
+// Date Revised:  29 November 2018
 // File Name:     input.cpp
 // Description:   Source file for input.h.  Defines functions that will be
 //                called by threads to recieve various input types
@@ -22,42 +22,6 @@
 
 
 // METHODS
-// TODO: test method. remove later
-int gather_input() {
-
-	// get the state machine so we can push events to it
-	state_machine& sm = state_machine::getInstance();
-
-	// wait for the state machine to start
-	std::this_thread::sleep_for(std::chrono::milliseconds(500));
-
-	if (!sm.isRunning) {
-		// TODO: add a try statement?
-		return -1;
-	}
-
-	int i = 0;
-	while (i < 10) {
-
-
-		if (i == 3 || i == 7) {
-			sm.pushEvent(b1_states::EV_NOMINAL);
-		}
-		if (i == 4 || i == 9) {
-			sm.pushEvent(b1_states::EV_OVR_PR);
-		}
-		if (i == 8) {
-			sm.pushEvent(b1_states::EV_FULL_TEMP);
-		}
-
-		std::this_thread::sleep_for(std::chrono::milliseconds(500));
-		i++;
-
-	}
-
-	return 0;
-
-}
 
 // TODO: put into its own thread
 int gather_PT_input(void) {
@@ -95,22 +59,16 @@ int gather_user_input(void) {
 
 	// wait for the state machine to start
 	std::this_thread::sleep_for(std::chrono::milliseconds(500));
-
-	if (!sm.isRunning) {
-		// TODO: add a try statement?
-		return -1;
-	}
+	// TODO: add check to make sure sm is running
 
 	int input;
 
-	for (int i = 0; i < 10; i++) {
+	while (sm.isRunning()) {
 
 		std::cout << "next event:" << std::endl;
 		std::cin >> input;
 
-		b1_states::b1_event event = static_cast<b1_states::b1_event>(input);
-
-		sm.pushEvent(event);
+		sm.pushEvent(static_cast<b1_states::b1_event>(input));
 
 	}
 

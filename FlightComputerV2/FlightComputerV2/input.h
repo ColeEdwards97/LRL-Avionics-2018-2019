@@ -8,7 +8,7 @@
 // University:    California State Polytechnic University, Pomona
 // Author:        Cole Edwards
 // Date Created:  23 October 2018
-// Date Revised:  26 November 2018
+// Date Revised:  29 November 2018
 // File Name:     input.h
 // Description:   Constructor file for input.cpp.  Defines functions that will
 //                be called by threads to recieve various input types
@@ -25,10 +25,11 @@
 #include <cstdio>
 #include <thread>
 #include <chrono>
+#include <ads1115.h>
 #include "b1_states.h"
 #include "state_machine.h"
-#include <ads1115.h>
 
-int gather_input(void);
+// METHODS
+
 int gather_PT_input(void);
 int gather_user_input(void);

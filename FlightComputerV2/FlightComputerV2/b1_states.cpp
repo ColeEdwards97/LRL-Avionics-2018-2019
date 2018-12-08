@@ -45,43 +45,137 @@ int b1_states::transCount(void) {
 
 // B1 STATE FUNCTIONS
 
-// ... fn1 ... //
-b1_states::b1_state b1_states::fn1(b1_states::MPS_CONFIG conf, b1_states::b1_state new_state) {
+// ... fn_init2idle ... //
+b1_states::b1_state b1_states::fn_init2idle(b1_states::b1_state new_state) {
 
-	// wait conf.wait1
-	sol_1->setSolState(conf.ss1);
-	// wait
-	sol_2->setSolState(conf.ss2);
-	// wait
-	vent_1->setVentState(conf.vs1);
-	// wait
-	vent_2->setVentState(conf.vs2);
-	// wait
-	pyro_1->setPyroState(conf.ps1);
-	// wait
-	pyro_2->setPyroState(conf.ps2);
+	sol_1->setSolState(b1_hardware::sol_state::CLOSED);
+	sol_2->setSolState(b1_hardware::sol_state::CLOSED);
+	vent_1->setVentState(b1_hardware::vent_state::CLOSED);
+	vent_2->setVentState(b1_hardware::vent_state::CLOSED);
+	pyro_1->setPyroState(b1_hardware::pyro_state::INTACT);
+	pyro_2->setPyroState(b1_hardware::pyro_state::INTACT);
 
-	std::cout << static_cast<int>(new_state) << std::endl;
-
+	std::cout << "state: " << static_cast<int>(new_state);
 	return new_state;
+
 }
-// ... fn2 ... //
-b1_states::b1_state b1_states::fn2(b1_states::MPS_CONFIG conf, b1_states::b1_state new_state) {
 
-	// wait conf.wait1
-	sol_1->setSolState(conf.ss1);
-	// wait
-	sol_2->setSolState(conf.ss2);
-	// wait
-	vent_1->setVentState(conf.vs1);
-	// wait
-	vent_2->setVentState(conf.vs2);
-	// wait
-	pyro_1->setPyroState(conf.ps1);
-	// wait
-	pyro_2->setPyroState(conf.ps2);
+// ... fn_idle2fill ... //
+b1_states::b1_state b1_states::fn_idle2fill(b1_states::b1_state new_state) {
 
-	std::cout << static_cast<int>(new_state) << std::endl;
+	vent_1->setVentState(b1_hardware::vent_state::OPEN);
+	vent_2->setVentState(b1_hardware::vent_state::OPEN);
+
+	std::cout << "state: " << static_cast<int>(new_state);
+	return new_state;
+
+}
+
+// ... fn_fill2pressurize ... //
+b1_states::b1_state b1_states::fn_fill2pressurize(b1_states::b1_state new_state) {
+
+	vent_1->setVentState(b1_hardware::vent_state::CLOSED);
+	vent_2->setVentState(b1_hardware::vent_state::CLOSED);
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+
+	sol_1->setSolState(b1_hardware::sol_state::OPEN);
+	sol_2->setSolState(b1_hardware::sol_state::OPEN);
+
+	std::cout << "state: " << static_cast<int>(new_state);
+	return new_state;
+
+}
+
+// ... fn_pressurized2ready ... //
+b1_states::b1_state b1_states::fn_pressurized2ready(b1_states::b1_state new_state) {
+
+	std::cout << "BRONCO ONE IS READY TO LAUNCH" << std::endl << "WAITING ON YOUR GO..." << std::endl;
+
+	std::cout << "state: " << static_cast<int>(new_state);
+	return new_state;
+
+}
+
+// ... fn_ready2launch ... //
+b1_states::b1_state b1_states::fn_ready2launch(b1_states::b1_state new_state) {
+
+	pyro_1->setPyroState(b1_hardware::pyro_state::BURST);
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+	pyro_2->setPyroState(b1_hardware::pyro_state::BURST);
+
+	std::cout << "state: " << static_cast<int>(new_state);
 
 	return new_state;
+
+}
+
+// ... fn_launch2cruise ... //
+b1_states::b1_state b1_states::fn_launch2cruise(b1_states::b1_state new_state) {
+
+	std::this_thread::sleep_for(std::chrono::seconds(20));
+
+	std::cout << "state: " << static_cast<int>(new_state);
+
+	return new_state;
+
+}
+
+// ... fn_cruise2term ... //
+b1_states::b1_state b1_states::fn_cruise2term(b1_states::b1_state new_state) {
+
+	sol_1->setSolState(b1_hardware::sol_state::OPEN);
+	sol_2->setSolState(b1_hardware::sol_state::OPEN);
+	vent_1->setVentState(b1_hardware::vent_state::OPEN);
+	vent_2->setVentState(b1_hardware::vent_state::OPEN);
+
+	std::cout << "state: " << static_cast<int>(new_state);
+
+	return new_state;
+
+}
+
+// ... fn_hold ... //
+b1_states::b1_state b1_states::fn_hold(b1_states::b1_state new_state) {
+
+	std::cout << "state: " << static_cast<int>(new_state);
+
+	return new_state;
+
+}
+
+// ... fn_vent ... //
+b1_states::b1_state b1_states::fn_vent(b1_states::b1_state new_state) {
+	
+	// OPEN VENT VALVES
+	vent_1->setVentState(b1_hardware::vent_state::OPEN);
+	vent_2->setVentState(b1_hardware::vent_state::OPEN);
+	// WAIT for 1.5 seconds
+	std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+	// CLOSE VENT VALVES
+	vent_1->setVentState(b1_hardware::vent_state::CLOSED);
+	vent_2->setVentState(b1_hardware::vent_state::CLOSED);
+
+	std::cout << "state: " << static_cast<int>(new_state);
+
+	return new_state;
+
+}
+
+// ... fn_emergency ... //
+b1_states::b1_state b1_states::fn_emergency(b1_states::b1_state new_state) {
+
+	sol_1->setSolState(b1_hardware::sol_state::OPEN);
+	sol_2->setSolState(b1_hardware::sol_state::OPEN);
+	vent_1->setVentState(b1_hardware::vent_state::OPEN);
+	vent_2->setVentState(b1_hardware::vent_state::OPEN);
+	pyro_1->setPyroState(b1_hardware::pyro_state::BURST);
+	pyro_2->setPyroState(b1_hardware::pyro_state::BURST);
+
+	std::cout << "state: " << static_cast<int>(new_state);
+
+	return new_state;
+
 }

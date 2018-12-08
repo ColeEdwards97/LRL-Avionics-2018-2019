@@ -47,6 +47,7 @@ int initialize_pins() {
 	return 0;
 
 }
+
 // cleanup pins
 int cleanup(void) {
 
@@ -60,6 +61,7 @@ int cleanup(void) {
 	return 0;
 
 }
+
 // Count the number of pin configurations to set
 int pin_count(void) {
 	return (sizeof(pin_init) / sizeof(*pin_init));

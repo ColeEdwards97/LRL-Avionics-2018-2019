@@ -117,11 +117,11 @@ void b1_hardware::setVentState(b1_hardware::vent_state newState) {
 		break;
 	case b1_hardware::vent_state::CLOSED:
 		// set GPIO pin to high state
-		digitalWrite(gpio_pin, HIGH);
+		digitalWrite(gpio_pin, LOW);
 		break;
 	case b1_hardware::vent_state::OPEN:
 		// set GPIO pin to low state
-		digitalWrite(gpio_pin, LOW);
+		digitalWrite(gpio_pin, HIGH);
 		break;
 	default:
 		break;

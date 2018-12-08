@@ -25,6 +25,8 @@
 #include <string>
 #include <unistd.h>
 #include <cstdio>
+#include <thread>
+#include <chrono>
 #include "b1_hardware.h"
 #include "pinout.h"
 
@@ -53,7 +55,6 @@ public:
 		ST_LAUNCH = 5,
 		ST_CRUISE = 6,
 		ST_VENT = 7,
-		ST_EMERGENCY = 800,
 		ST_TERM = 9999
 
 	};
@@ -67,114 +68,46 @@ public:
 		EV_STOP_FILL = 3,
 		EV_PRESSURIZED = 4,
 		EV_LAUNCH = 5,
-		EV_BURNOUT = 6,
 		EV_OVR_PR = 700,
 		EV_EMERG = 800
 
 	};
 
 	// STRUCTS
-	typedef struct {
-		b1_hardware::sol_state ss1;
-		b1_hardware::sol_state ss2;
-		b1_hardware::vent_state vs1;
-		b1_hardware::vent_state vs2;
-		b1_hardware::pyro_state ps1;
-		b1_hardware::pyro_state ps2;
-		int wait_ss1;
-		int wait_ss2;
-		int wait_vs1;
-		int wait_vs2;
-		int wait_ps1;
-		int wait_ps2;
-	} MPS_CONFIG;
-
-	b1_states::MPS_CONFIG conf[7] {
-		// INIT, IDLE, FILLED
-		{ b1_hardware::sol_state::CLOSED,
-		b1_hardware::sol_state::CLOSED,
-		b1_hardware::vent_state::CLOSED,
-		b1_hardware::vent_state::CLOSED,
-		b1_hardware::pyro_state::INTACT,
-		b1_hardware::pyro_state::INTACT,
-		0,0,0,0,0,0 },
-		// FILL
-		{ b1_hardware::sol_state::CLOSED,
-		b1_hardware::sol_state::CLOSED,
-	    b1_hardware::vent_state::OPEN,
-		b1_hardware::vent_state::OPEN,
-		b1_hardware::pyro_state::INTACT,
-		b1_hardware::pyro_state::INTACT,
-		0,0,0,0,0,0	},
-		// PRESSURIZE
-		{ b1_hardware::sol_state::OPEN,
-		b1_hardware::sol_state::OPEN,
-		b1_hardware::vent_state::CLOSED,
-		b1_hardware::vent_state::CLOSED,
-		b1_hardware::pyro_state::INTACT,
-		b1_hardware::pyro_state::INTACT,
-		0,0,0,0,0,0 },
-		// LAUNCH
-		{ b1_hardware::sol_state::OPEN,
-		b1_hardware::sol_state::OPEN,
-		b1_hardware::vent_state::CLOSED,
-		b1_hardware::vent_state::CLOSED,
-		b1_hardware::pyro_state::BURST,
-		b1_hardware::pyro_state::BURST,
-		0,0,0,0,0,0 },
-		// VENT
-		{ b1_hardware::sol_state::HOLD,
-		b1_hardware::sol_state::HOLD,
-		b1_hardware::vent_state::OPEN,
-		b1_hardware::vent_state::OPEN,
-		b1_hardware::pyro_state::HOLD,
-		b1_hardware::pyro_state::HOLD,
-		0,0,0,0,0,0 },
-		// HOLD
-		{ b1_hardware::sol_state::HOLD,
-		b1_hardware::sol_state::HOLD,
-		b1_hardware::vent_state::HOLD,
-		b1_hardware::vent_state::HOLD,
-		b1_hardware::pyro_state::HOLD,
-		b1_hardware::pyro_state::HOLD,
-		0,0,0,0,0,0 },
-		// DRAIN
-		{ b1_hardware::sol_state::OPEN,
-		b1_hardware::sol_state::OPEN,
-		b1_hardware::vent_state::OPEN,
-		b1_hardware::vent_state::OPEN,
-		b1_hardware::pyro_state::BURST,
-		b1_hardware::pyro_state::BURST,
-		0,0,0,0,0,0 }
-
-	};
 
 	typedef struct {
 		b1_state st;
 		b1_event ev;
-		MPS_CONFIG conf;
 		b1_state new_st;
-		b1_state(*fn)(MPS_CONFIG, b1_state);
+		b1_state(*fn)(b1_state);
 	} tTransition;
 
 	b1_states::tTransition trans[10] = {
-		// TODO: create appropriate state functions
-		{ ST_INIT,			EV_START,		conf[1],	ST_IDLE,			fn1 },
-		{ ST_IDLE,			EV_START_FILL,	conf[2],	ST_FILL,			fn1 },
-		{ ST_FILL,			EV_STOP_FILL,	conf[3],	ST_PRESSURIZE,		fn1	},
-		{ ST_PRESSURIZE,	EV_PRESSURIZED, conf[3],	ST_READY2LAUNCH,	fn1 },
-		{ ST_READY2LAUNCH,	EV_LAUNCH,		conf[4],	ST_LAUNCH,			fn1 },
-		{ ST_LAUNCH,		EV_NOMINAL,		conf[7],	ST_CRUISE,			fn1	},
-		{ ST_CRUISE,		EV_BURNOUT,		conf[5],	ST_TERM,			fn1 },
-		{ ST_ANY,			EV_NOMINAL,     conf[6],    currentState,		fn1 },	// HOLD
-		{ ST_ANY,			EV_OVR_PR,		conf[5],	currentState,		fn1 },	// VENT
-		{ ST_ANY,			EV_EMERG,		conf[7],	ST_EMERGENCY,		fn1 }	// DRAIN
+		{ ST_INIT,			EV_START,		ST_IDLE,			fn_init2idle		 }, // INITIALIZE
+		{ ST_IDLE,			EV_START_FILL,	ST_FILL,			fn_idle2fill		 }, // FILL
+		{ ST_FILL,			EV_STOP_FILL,	ST_PRESSURIZE,		fn_fill2pressurize	 }, // PRESSURIZE
+		{ ST_PRESSURIZE,	EV_PRESSURIZED, ST_READY2LAUNCH,	fn_pressurized2ready }, // READY
+		{ ST_READY2LAUNCH,	EV_LAUNCH,		ST_LAUNCH,			fn_ready2launch		 }, // LAUNCH
+		{ ST_LAUNCH,		EV_NOMINAL,		ST_CRUISE,			fn_launch2cruise	 }, // CRUISE
+		{ ST_CRUISE,		EV_NOMINAL,		ST_TERM,			fn_cruise2term		 }, // BURN OUT
+
+		{ ST_ANY,			EV_NOMINAL,     currentState,		fn_hold				 },	// HOLD
+		{ ST_ANY,			EV_OVR_PR,		currentState,		fn_vent				 },	// VENT
+		{ ST_ANY,			EV_EMERG,		ST_TERM,			fn_emergency		 }	// DRAIN
 
 	};
 
 	// METHODS
-	static b1_state fn1(MPS_CONFIG, b1_state);
-	static b1_state fn2(MPS_CONFIG, b1_state);
+	static b1_state fn_init2idle(b1_state);
+	static b1_state fn_idle2fill(b1_state);
+	static b1_state fn_fill2pressurize(b1_state);
+	static b1_state fn_pressurized2ready(b1_state);
+	static b1_state fn_ready2launch(b1_state);
+	static b1_state fn_launch2cruise(b1_state);
+	static b1_state fn_cruise2term(b1_state);
+	static b1_state fn_hold(b1_state);
+	static b1_state fn_vent(b1_state);
+	static b1_state fn_emergency(b1_state);
 
 	int transCount(void);
 

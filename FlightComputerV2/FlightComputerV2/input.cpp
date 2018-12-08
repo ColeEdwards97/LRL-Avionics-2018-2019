@@ -26,12 +26,19 @@
 // TODO: put into its own thread
 int gather_PT_input(void) {
 
+	// get the state machine so we can push events to it
+	state_machine& sm = state_machine::getInstance();
+
+	// wait for the state machine to start
+	std::this_thread::sleep_for(std::chrono::milliseconds(500));
+	// TODO: add check to make sure sm is running
+
 	int pinbase = 100;
 	int i2cloc = 0x48;
 	int a2dval;
 	float a2dvol;
+	float a2dpsi;
 	float vref = 5;
-	int a2dchannel = 0;
 
 	std::cout << "gathering pt data..." << std::endl;
 
@@ -40,11 +47,28 @@ int gather_PT_input(void) {
 		return -1;
 	}
 	else {
-		for (int i = 0; i < 10; i++) {
-			a2dval = analogRead(pinbase + a2dchannel);
-			a2dvol = a2dval * vref / 4096;
-			std::cout << "value: " << a2dval << std::endl;
-			std::cout << "voltatge: " << a2dvol << std::endl;
+
+		int chan[2] = { 0,1 };
+
+		while(sm.isRunning()) {
+
+			for (int j : chan) {
+
+				a2dval = analogRead(pinbase + chan[j]);
+				a2dvol = a2dval * vref / 65536;
+				a2dpsi = a2dvol * 198.66 - 112.66;
+
+				std::cout << "chan " << j << " " << a2dpsi << " psi" << std::endl;
+
+				//if (a2dpsi >= 400) {
+				//	sm.pushEvent(b1_states::b1_event::EV_OVR_PR);
+				//}
+				//else {
+				//	sm.pushEvent(b1_states::b1_event::EV_NOMINAL);
+				//}
+
+			}
+
 		}
 		return 0;
 	}
@@ -62,13 +86,31 @@ int gather_user_input(void) {
 	// TODO: add check to make sure sm is running
 
 	int input;
+	char confirm;
 
 	while (sm.isRunning()) {
 
 		std::cout << "next event:" << std::endl;
 		std::cin >> input;
 
-		sm.pushEvent(static_cast<b1_states::b1_event>(input));
+		if (input == 5) {
+
+			std::cout << "are you sure you want to launch? Y/N" << std::endl;
+			std::cin >> confirm;
+
+			switch (confirm) {
+			case 'Y':
+				std::cout << "BRONCO ONE IS LAUNCHING!" << std::endl;
+				sm.pushEvent(static_cast<b1_states::b1_event>(input));
+				break;
+			case 'N':
+				break;
+			}
+
+		}
+		else {
+			sm.pushEvent(static_cast<b1_states::b1_event>(input));
+		}
 
 	}
 

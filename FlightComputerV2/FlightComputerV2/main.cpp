@@ -46,12 +46,14 @@ int main() {
 
 	// start the thread(s) that gathers system inputs
 	std::thread th_USER_INPUT(gather_user_input);
+	std::thread th_PT_INPUT(gather_PT_input);
 
 	// run the finite state machine
 	sm.run();
 
 	// wait until input thread(s) finishes
 	th_USER_INPUT.join();
+	th_PT_INPUT.join();
 
 	// stop program and wait for input
 	// TODO: remove later

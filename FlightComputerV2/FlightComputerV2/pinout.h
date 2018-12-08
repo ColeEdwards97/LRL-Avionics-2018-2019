@@ -8,7 +8,7 @@
 // University:    California State Polytechnic University, Pomona
 // Author:        Cole Edwards
 // Date Created:  06 November 2018
-// Date Revised:  13 November 2018
+// Date Revised:  04 December 2018
 // File Name:     pinout.h
 // Description:   Constructor file for pinout.cpp.  Defines all the pins and
 //                what state they should be exported to.  Also aliases the pin
@@ -31,12 +31,11 @@
 
 // ENUMS
 enum PIN_ALIAS {
-	// TODO: Set the actual pin value here
 	PIN_SOL_1 = 5,
-	PIN_SOL_2 = 6,
-	PIN_VENT_1 = 13,
-	PIN_VENT_2 = 16,
-	PIN_PYRO_1 = 19,
+	PIN_SOL_2 = 16,
+	PIN_VENT_1 = 6,
+	PIN_VENT_2 = 19,
+	PIN_PYRO_1 = 13,
 	PIN_PYRO_2 = 20
 };
 

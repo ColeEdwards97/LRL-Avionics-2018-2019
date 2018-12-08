@@ -79,8 +79,12 @@ void state_machine::run(void) {
 				if ((state == states.trans[i].st) || (states.ST_ANY == states.trans[i].st)) {
 
 					if ((event == states.trans[i].ev) || (states.EV_ANY == states.trans[i].ev)) {
-						state = (states.trans[i].fn)(states.trans[i].conf, states.trans[i].new_st);
+						state = (states.trans[i].fn)(states.trans[i].new_st);
 						setCurrentState(state);
+						eventQueue.pop();
+						break;
+					}
+					else {
 						eventQueue.pop();
 						break;
 					}

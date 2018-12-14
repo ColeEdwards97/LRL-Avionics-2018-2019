@@ -8,7 +8,7 @@
 // University:    California State Polytechnic University, Pomona
 // Author:        Cole Edwards
 // Date Created:  23 October 2018
-// Date Revised:  29 November 2018
+// Date Revised:  14 December 2018
 // File Name:     b1_states.cpp
 // Description:   Source file for b1_states.h.  Defines the functions to get 
 //                and set the state of the Bronco One.
@@ -106,6 +106,11 @@ b1_states::b1_state b1_states::fn_ready2launch(b1_states::b1_state new_state) {
 
 	pyro_2->setPyroState(b1_hardware::pyro_state::BURST);
 
+	std::this_thread::sleep_for(std::chrono::seconds(5));
+
+	pyro_1->setPyroState(b1_hardware::pyro_state::INTACT);
+	pyro_2->setPyroState(b1_hardware::pyro_state::INTACT);
+
 	std::cout << "state: " << static_cast<int>(new_state);
 
 	return new_state;
@@ -115,7 +120,7 @@ b1_states::b1_state b1_states::fn_ready2launch(b1_states::b1_state new_state) {
 // ... fn_launch2cruise ... //
 b1_states::b1_state b1_states::fn_launch2cruise(b1_states::b1_state new_state) {
 
-	std::this_thread::sleep_for(std::chrono::seconds(20));
+	std::this_thread::sleep_for(std::chrono::seconds(5));
 
 	std::cout << "state: " << static_cast<int>(new_state);
 
@@ -152,8 +157,8 @@ b1_states::b1_state b1_states::fn_vent(b1_states::b1_state new_state) {
 	// OPEN VENT VALVES
 	vent_1->setVentState(b1_hardware::vent_state::OPEN);
 	vent_2->setVentState(b1_hardware::vent_state::OPEN);
-	// WAIT for 1.5 seconds
-	std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+	// WAIT for 3 seconds
+	std::this_thread::sleep_for(std::chrono::milliseconds(3000));
 	// CLOSE VENT VALVES
 	vent_1->setVentState(b1_hardware::vent_state::CLOSED);
 	vent_2->setVentState(b1_hardware::vent_state::CLOSED);

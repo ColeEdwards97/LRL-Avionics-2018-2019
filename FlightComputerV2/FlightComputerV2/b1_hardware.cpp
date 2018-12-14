@@ -8,7 +8,7 @@
 // University:    California State Polytechnic University, Pomona
 // Author:        Cole Edwards
 // Date Created:  23 October 2018
-// Date Revised:  29 November 2018
+// Date Revised:  14 December 2018
 // File Name:     b1_hardware.cpp
 // Description:   Source file for b1_hardware.h.  Defines the functions to get 
 //                and set a hardware's state.
@@ -117,11 +117,11 @@ void b1_hardware::setVentState(b1_hardware::vent_state newState) {
 		break;
 	case b1_hardware::vent_state::CLOSED:
 		// set GPIO pin to high state
-		digitalWrite(gpio_pin, LOW);
+		digitalWrite(gpio_pin, HIGH);
 		break;
 	case b1_hardware::vent_state::OPEN:
 		// set GPIO pin to low state
-		digitalWrite(gpio_pin, HIGH);
+		digitalWrite(gpio_pin, LOW);
 		break;
 	default:
 		break;
@@ -142,6 +142,7 @@ void b1_hardware::setPyroState(b1_hardware::pyro_state newState) {
 		break;
 	case b1_hardware::pyro_state::INTACT:
 		// do nothing
+		digitalWrite(gpio_pin, HIGH);
 		break;
 	case b1_hardware::pyro_state::BURST:
 		// set GPIO pin to low a few times to ensure pyro is burst

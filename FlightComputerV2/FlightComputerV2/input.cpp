@@ -8,7 +8,7 @@
 // University:    California State Polytechnic University, Pomona
 // Author:        Cole Edwards
 // Date Created:  23 October 2018
-// Date Revised:  29 November 2018
+// Date Revised:  14 December 2018
 // File Name:     input.cpp
 // Description:   Source file for input.h.  Defines functions that will be
 //                called by threads to recieve various input types
@@ -23,7 +23,7 @@
 
 // METHODS
 
-// TODO: put into its own thread
+// ... GATHER_PT_INPUT ... //
 int gather_PT_input(void) {
 
 	// get the state machine so we can push events to it
@@ -35,6 +35,7 @@ int gather_PT_input(void) {
 
 	int pinbase = 100;
 	int i2cloc = 0x48;
+	int adcbits = 16;
 	int a2dval;
 	float a2dvol;
 	float a2dpsi;
@@ -55,14 +56,15 @@ int gather_PT_input(void) {
 			for (int j : chan) {
 
 				a2dval = analogRead(pinbase + chan[j]);
-				a2dvol = a2dval * vref / 65536;
-				a2dpsi = a2dvol * 198.66 - 112.66;
+				//a2dvol = a2dval * vref / (pow(2, (adcbits - 1)) - 1);
+				a2dvol = a2dval * 4.096 / (pow(2, (adcbits - 1)) - 1);
+				a2dpsi = a2dvol * 198.66f - 112.66f;
 
-				std::cout << "chan " << j << " " << a2dpsi << " psi" << std::endl;
+				//std::cout << "chan " << j << " " << a2dvol << " psi" << std::endl;
 
-				//if (a2dpsi >= 400) {
-				//	sm.pushEvent(b1_states::b1_event::EV_OVR_PR);
-				//}
+				if (a2dpsi >= 400) {
+					sm.pushEvent(b1_states::b1_event::EV_OVR_PR);
+				}
 				//else {
 				//	sm.pushEvent(b1_states::b1_event::EV_NOMINAL);
 				//}
@@ -75,7 +77,7 @@ int gather_PT_input(void) {
 
 }
 
-// TODO: put into its own thread
+// ... GATHER_USER_INPUT ... //
 int gather_user_input(void) {
 
 	// get the state machine so we can push events to it

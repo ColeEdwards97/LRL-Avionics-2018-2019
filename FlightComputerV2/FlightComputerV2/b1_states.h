@@ -8,7 +8,7 @@
 // University:    California State Polytechnic University, Pomona
 // Author:        Cole Edwards
 // Date Created:  23 October 2018
-// Date Revised:  29 November 2018
+// Date Revised:  14 December 2018
 // File Name:     b1_states.h
 // Description:   Constructor file for b1_states.cpp.  Defines the possible
 //                states, events, transitions, and transition functions for the

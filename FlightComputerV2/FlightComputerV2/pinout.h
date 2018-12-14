@@ -31,10 +31,10 @@
 
 // ENUMS
 enum PIN_ALIAS {
-	PIN_SOL_1 = 5,
-	PIN_SOL_2 = 16,
-	PIN_VENT_1 = 6,
-	PIN_VENT_2 = 19,
+	PIN_SOL_1 = 19,
+	PIN_SOL_2 = 5,
+	PIN_VENT_1 = 16,
+	PIN_VENT_2 = 6,
 	PIN_PYRO_1 = 13,
 	PIN_PYRO_2 = 20
 };

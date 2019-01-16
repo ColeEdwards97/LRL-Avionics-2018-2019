@@ -49,7 +49,7 @@ int gather_PT_input(void) {
 	}
 	else {
 
-		int chan[2] = { 0,1 };
+		int chan[2] = { 0 };
 
 		while(sm.isRunning()) {
 
@@ -60,9 +60,9 @@ int gather_PT_input(void) {
 				a2dvol = a2dval * 4.096 / (pow(2, (adcbits - 1)) - 1);
 				a2dpsi = a2dvol * 198.66f - 112.66f;
 
-				//std::cout << "chan " << j << " " << a2dvol << " psi" << std::endl;
+				std::cout << "chan " << j << " " << a2dpsi << " psi" << std::endl;
 
-				if (a2dpsi >= 400) {
+				if (a2dpsi >= 36) {
 					sm.pushEvent(b1_states::b1_event::EV_OVR_PR);
 				}
 				//else {

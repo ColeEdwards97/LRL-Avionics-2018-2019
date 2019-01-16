@@ -43,6 +43,9 @@ public:
 	b1_states(b1_states const&) = delete;
 	void operator=(b1_states const&) = delete;
 
+	// STATE MACHINE INSTANCE
+	state_machine& sm = state_machine::getInstance();
+
 	// ENUMS
 	enum b1_state {
 
@@ -91,8 +94,8 @@ public:
 		{ ST_LAUNCH,		EV_NOMINAL,		ST_CRUISE,			fn_launch2cruise	 }, // CRUISE
 		{ ST_CRUISE,		EV_NOMINAL,		ST_TERM,			fn_cruise2term		 }, // BURN OUT
 
-		{ ST_ANY,			EV_NOMINAL,     currentState,		fn_hold				 },	// HOLD
-		{ ST_ANY,			EV_OVR_PR,		currentState,		fn_vent				 },	// VENT
+		{ ST_ANY,			EV_NOMINAL,     ST_ANY,				fn_hold				 },	// HOLD
+		{ ST_ANY,			EV_OVR_PR,		ST_ANY,				fn_vent				 },	// VENT
 		{ ST_ANY,			EV_EMERG,		ST_TERM,			fn_emergency		 }	// DRAIN
 
 	};
@@ -117,9 +120,6 @@ private:
 	b1_states();
 
 	// VARIABLES
-	b1_state currentState;
-	b1_event currentEvent;
-
 	static b1_hardware* sol_1;
 	static b1_hardware* sol_2;
 	static b1_hardware* vent_1;

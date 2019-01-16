@@ -29,9 +29,6 @@ b1_hardware* b1_states::pyro_2 = new b1_hardware(PIN_PYRO_2, b1_hardware::hardwa
 // CONSTRUCTOR
 b1_states::b1_states() {
 
-	currentState = b1_state::ST_INIT;
-	currentEvent = b1_event::EV_NOMINAL;
-
 }
 
 // GETTERS
@@ -55,7 +52,7 @@ b1_states::b1_state b1_states::fn_init2idle(b1_states::b1_state new_state) {
 	pyro_1->setPyroState(b1_hardware::pyro_state::INTACT);
 	pyro_2->setPyroState(b1_hardware::pyro_state::INTACT);
 
-	std::cout << "state: " << static_cast<int>(new_state);
+	std::cout << "state: " << static_cast<int>(new_state) << std::endl;
 	return new_state;
 
 }
@@ -66,7 +63,7 @@ b1_states::b1_state b1_states::fn_idle2fill(b1_states::b1_state new_state) {
 	vent_1->setVentState(b1_hardware::vent_state::OPEN);
 	vent_2->setVentState(b1_hardware::vent_state::OPEN);
 
-	std::cout << "state: " << static_cast<int>(new_state);
+	std::cout << "state: " << static_cast<int>(new_state) << std::endl;
 	return new_state;
 
 }
@@ -82,7 +79,7 @@ b1_states::b1_state b1_states::fn_fill2pressurize(b1_states::b1_state new_state)
 	sol_1->setSolState(b1_hardware::sol_state::OPEN);
 	sol_2->setSolState(b1_hardware::sol_state::OPEN);
 
-	std::cout << "state: " << static_cast<int>(new_state);
+	std::cout << "state: " << static_cast<int>(new_state) << std::endl;
 	return new_state;
 
 }
@@ -92,7 +89,7 @@ b1_states::b1_state b1_states::fn_pressurized2ready(b1_states::b1_state new_stat
 
 	std::cout << "BRONCO ONE IS READY TO LAUNCH" << std::endl << "WAITING ON YOUR GO..." << std::endl;
 
-	std::cout << "state: " << static_cast<int>(new_state);
+	std::cout << "state: " << static_cast<int>(new_state) << std::endl;
 	return new_state;
 
 }
@@ -111,7 +108,7 @@ b1_states::b1_state b1_states::fn_ready2launch(b1_states::b1_state new_state) {
 	pyro_1->setPyroState(b1_hardware::pyro_state::INTACT);
 	pyro_2->setPyroState(b1_hardware::pyro_state::INTACT);
 
-	std::cout << "state: " << static_cast<int>(new_state);
+	std::cout << "state: " << static_cast<int>(new_state) << std::endl;
 
 	return new_state;
 
@@ -122,7 +119,7 @@ b1_states::b1_state b1_states::fn_launch2cruise(b1_states::b1_state new_state) {
 
 	std::this_thread::sleep_for(std::chrono::seconds(5));
 
-	std::cout << "state: " << static_cast<int>(new_state);
+	std::cout << "state: " << static_cast<int>(new_state) << std::endl;
 
 	return new_state;
 
@@ -136,7 +133,7 @@ b1_states::b1_state b1_states::fn_cruise2term(b1_states::b1_state new_state) {
 	vent_1->setVentState(b1_hardware::vent_state::OPEN);
 	vent_2->setVentState(b1_hardware::vent_state::OPEN);
 
-	std::cout << "state: " << static_cast<int>(new_state);
+	std::cout << "state: " << static_cast<int>(new_state) << std::endl;
 
 	return new_state;
 
@@ -145,7 +142,7 @@ b1_states::b1_state b1_states::fn_cruise2term(b1_states::b1_state new_state) {
 // ... fn_hold ... //
 b1_states::b1_state b1_states::fn_hold(b1_states::b1_state new_state) {
 
-	std::cout << "state: " << static_cast<int>(new_state);
+	std::cout << "state: " << static_cast<int>(new_state) << std::endl;
 
 	return new_state;
 
@@ -153,7 +150,7 @@ b1_states::b1_state b1_states::fn_hold(b1_states::b1_state new_state) {
 
 // ... fn_vent ... //
 b1_states::b1_state b1_states::fn_vent(b1_states::b1_state new_state) {
-	
+
 	// OPEN VENT VALVES
 	vent_1->setVentState(b1_hardware::vent_state::OPEN);
 	vent_2->setVentState(b1_hardware::vent_state::OPEN);
@@ -163,7 +160,7 @@ b1_states::b1_state b1_states::fn_vent(b1_states::b1_state new_state) {
 	vent_1->setVentState(b1_hardware::vent_state::CLOSED);
 	vent_2->setVentState(b1_hardware::vent_state::CLOSED);
 
-	std::cout << "state: " << static_cast<int>(new_state);
+	std::cout << "state: " << static_cast<int>(new_state) << std::endl;
 
 	return new_state;
 
@@ -179,7 +176,7 @@ b1_states::b1_state b1_states::fn_emergency(b1_states::b1_state new_state) {
 	pyro_1->setPyroState(b1_hardware::pyro_state::BURST);
 	pyro_2->setPyroState(b1_hardware::pyro_state::BURST);
 
-	std::cout << "state: " << static_cast<int>(new_state);
+	std::cout << "state: " << static_cast<int>(new_state) << std::endl;
 
 	return new_state;
 

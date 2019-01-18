@@ -114,6 +114,9 @@ public:
 	static b1_state fn_emergency(b1_state);
 	static b1_state fn_ERROR(b1_state);
 
+	static void vent_LOX_pressure(void);
+	static void vent_CH4_pressure(void);
+
 	static void launch_countdown(void);
 	static void burnout_timer(void);
 

@@ -45,7 +45,33 @@ int b1_states::transCount(void) {
 // ... fn_init ... //
 b1_states::b1_state b1_states::fn_init(b1_states::b1_state new_state) {
 
-	std::cout << "State Machine started successfully" << std::endl;
+	std::this_thread::sleep_for(std::chrono::seconds(3));
+
+	std::cout << "State Machine started successfully\n";
+	std::cout << "Testing hardware...\n";
+	std::cout << "LOX helium valve\n";
+	helium_LOX->open(); 
+	std::this_thread::sleep_for(std::chrono::seconds(2));
+	helium_LOX->close();
+	std::this_thread::sleep_for(std::chrono::seconds(2));
+	std::cout << "CH4 helium valve\n";
+	helium_CH4->open();
+	std::this_thread::sleep_for(std::chrono::seconds(2));
+	helium_CH4->close();
+	std::this_thread::sleep_for(std::chrono::seconds(2));
+	std::cout << "LOX vent valve\n";
+	vent_LOX->open();
+	std::this_thread::sleep_for(std::chrono::seconds(2));
+	vent_LOX->close();
+	std::this_thread::sleep_for(std::chrono::seconds(2));
+	std::cout << "CH4 vent valve\n";
+	vent_CH4->open();
+	std::this_thread::sleep_for(std::chrono::seconds(2));
+	vent_CH4->close();
+	std::this_thread::sleep_for(std::chrono::seconds(2));
+	std::cout << "Hardware checkout complete\n";
+	std::cout << "Awaiting user input...\n";
+
 	return new_state;
 
 }
@@ -58,8 +84,8 @@ b1_states::b1_state b1_states::fn_init2idle(b1_states::b1_state new_state) {
 	vent_LOX->close();
 	vent_CH4->close();
 
-	std::cout << "Bronco One has been initialized..." << std::endl;
-	std::cout << "Waiting to begin filling..." << std::endl;
+	std::cout << "Bronco One has been initialized...\n";
+	std::cout << "Waiting to begin filling...\n";
 	return new_state;
 
 }
@@ -70,8 +96,8 @@ b1_states::b1_state b1_states::fn_idle2fill(b1_states::b1_state new_state) {
 	vent_LOX->open();
 	vent_CH4->open();
 
-	std::cout << "Bronco One is ready to be filled" << std::endl;
-	std::cout << "Begin filling sequence" << std::endl;
+	std::cout << "Bronco One is ready to be filled\n";
+	std::cout << "Begin filling sequence\n";
 	return new_state;
 
 }
@@ -79,15 +105,15 @@ b1_states::b1_state b1_states::fn_idle2fill(b1_states::b1_state new_state) {
 // ... fn_fill2pressurize ... //
 b1_states::b1_state b1_states::fn_fill2pressurize(b1_states::b1_state new_state) {
 
-	vent_LOX->close();
-	vent_CH4->close();
-
-	std::this_thread::sleep_for(std::chrono::seconds(1));
-
 	helium_LOX->open();
 	helium_CH4->open();
 
-	std::cout << "Bronco One is being pressurized..." << std::endl;
+	std::this_thread::sleep_for(std::chrono::seconds(1));
+
+	vent_LOX->close();
+	vent_CH4->close();
+
+	std::cout << "Bronco One is being pressurized...\n";
 	return new_state;
 
 }
@@ -95,8 +121,8 @@ b1_states::b1_state b1_states::fn_fill2pressurize(b1_states::b1_state new_state)
 // ... fn_pressurized2ready ... //
 b1_states::b1_state b1_states::fn_pressurized2ready(b1_states::b1_state new_state) {
 
-	std::cout << "Bronco One is pressurized and ready to launch." << std::endl;
-	std::cout << "Waiting on your go..." << std::endl;
+	std::cout << "Bronco One is pressurized and ready to launch\n";
+	std::cout << "Waiting on your go...\n";
 	return new_state;
 
 }
@@ -104,15 +130,15 @@ b1_states::b1_state b1_states::fn_pressurized2ready(b1_states::b1_state new_stat
 // ... fn_ready2launch ... //
 b1_states::b1_state b1_states::fn_ready2launch(b1_states::b1_state new_state) {
 
-	std::cout << "Bronco One is launching in..." << std::endl;
+	std::cout << "Bronco One is launching in...\n";
 	
 	launch_countdown();
 
-	pyro_LOX->detonate();
+	pyro_CH4->detonate();
 
 	std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
-	pyro_CH4->detonate();
+	pyro_LOX->detonate();
 
 	std::thread(burnout_timer).detach();
 
@@ -125,11 +151,11 @@ b1_states::b1_state b1_states::fn_launch2term(b1_states::b1_state new_state) {
 
 	helium_LOX->open();
 	helium_CH4->open();
-	vent_LOX->open();
-	vent_CH4->open();
+	//vent_LOX->open();
+	//vent_CH4->open();
 
-	std::cout << "Bronco One has successfully launched..." << std::endl;
-	std::cout << "Good luck on recovery :)" << std::endl;
+	std::cout << "Bronco One has successfully launched...\n";
+	std::cout << "Good luck on recovery :)\n";
 
 	return new_state;
 
@@ -138,14 +164,9 @@ b1_states::b1_state b1_states::fn_launch2term(b1_states::b1_state new_state) {
 // ... fn_vent_LOX ... //
 b1_states::b1_state b1_states::fn_vent_LOX(b1_states::b1_state new_state) {
 	
-	std::cout << "Venting LOX line" << std::endl;
+	std::cout << "Venting LOX line\n";
 
-	// open LOX vent valve
-	vent_LOX->open();
-	// wait for 3 seconds
-	std::this_thread::sleep_for(std::chrono::seconds(3));
-	// close LOX vent valve
-	vent_CH4->close();
+	std::thread(vent_LOX_pressure).detach();
 	
 	return state_mach.getPreviousState();
 
@@ -154,14 +175,9 @@ b1_states::b1_state b1_states::fn_vent_LOX(b1_states::b1_state new_state) {
 // ... fn_vent_CH4 ... //
 b1_states::b1_state b1_states::fn_vent_CH4(b1_states::b1_state new_state) {
 
-	std::cout << "Venting CH4 line" << std::endl;
+	std::cout << "Venting CH4 line\n";
 
-	// open CH4 vent valve
-	vent_CH4->open();
-	// wait for 3 seconds
-	std::this_thread::sleep_for(std::chrono::seconds(3));
-	// close CH4 vent valve
-	vent_CH4->close();
+	std::thread(vent_CH4_pressure).detach();
 
 	return state_mach.getPreviousState();
 
@@ -170,14 +186,30 @@ b1_states::b1_state b1_states::fn_vent_CH4(b1_states::b1_state new_state) {
 // ... fn_emergency ... //
 b1_states::b1_state b1_states::fn_emergency(b1_states::b1_state new_state) {
 
-	helium_LOX->open();
-	helium_CH4->open();
-	vent_LOX->open();
+	std::cout << "Emergency procedure has been executed. Draining fuel lines...\n";
+
+	std::cout << "Draining LOX line\n";
+	helium_CH4->close();
 	vent_CH4->open();
+	vent_LOX->close();
+	helium_LOX->open();
 	pyro_LOX->detonate();
+
+	std::this_thread::sleep_for(std::chrono::seconds(10));
+
+	std::cout << "Press 'ENTER' to proceed with draining CH4 line\n";
+	std::cin.ignore();
+	std::cin.ignore();
+
+	std::cout << "Draining CH4 line...\n";
+	vent_CH4->close();
+	helium_CH4->open();
 	pyro_CH4->detonate();
 
-	std::cout << "Emergency procedure has been executed.  Draining fuels..." << std::endl;
+	std::this_thread::sleep_for(std::chrono::seconds(10));
+
+	std::cout << "Fuel lines drained successfully\n";
+
 	return new_state;
 
 }
@@ -185,8 +217,32 @@ b1_states::b1_state b1_states::fn_emergency(b1_states::b1_state new_state) {
 // ... fn_ERROR ... //
 b1_states::b1_state b1_states::fn_ERROR(b1_states::b1_state new_state) {
 
-	std::cout << "ERROR - state machine is not constructed properly" << std::endl;
+	std::cout << "ERROR - state machine is not constructed properly\n";
 	return new_state;
+
+}
+
+// ... vent_LOX - to be spawned in a thread to prevent backing up the state machine ... //
+void b1_states::vent_LOX_pressure(void) {
+
+	// open LOX vent valve
+	vent_LOX->open();
+	// wait for 3 seconds
+	std::this_thread::sleep_for(std::chrono::seconds(3));
+	// close LOX vent valve
+	vent_LOX->close();
+
+}
+
+// ... vent_CH4 - to be spawned in a thread to prevent backing up the state machine ... //
+void b1_states::vent_CH4_pressure(void) {
+
+	// open CH4 vent valve
+	vent_CH4->open();
+	// wait for 3 seconds
+	std::this_thread::sleep_for(std::chrono::seconds(3));
+	// close CH4 vent valve
+	vent_CH4->close();
 
 }
 

@@ -33,7 +33,7 @@ static pins pin_init[6] = {
 // ... initialize pins ... //
 int initialize_pins() {
 
-	std::cout << "exporting pins" << std::endl;
+	std::cout << "Exporting GPIO pins\n";
 
 	wiringPiSetupGpio();
 

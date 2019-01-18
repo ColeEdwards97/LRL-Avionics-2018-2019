@@ -41,12 +41,12 @@ int gather_PT_input(void) {
 	int max_CH4_pressure = 340;
 
 	if (ads1115Setup(pinbase, i2cloc) < 0) {
-		std::cout << "failed setting up I2C device :(" << std::endl;
+		std::cout << "Failed setting up I2C device :(\n";
 		return -1;
 	}
 	else {
 
-		std::cout << "gathering pt data..." << std::endl;
+		std::cout << "Gathering pt data...\n";
 
 		int chan[2] = { 0, 1 };
 
@@ -92,13 +92,15 @@ int gather_user_input(void) {
 	int input;
 	char confirm;
 
+	std::cout << "Gathering user input...\n";
+
 	while (sm.isRunning()) {
 
 		std::cin >> input;
 
-		if (input == 5) {
+		if (static_cast<b1_states::b1_event>(input) == b1_states::EV_LAUNCH) {
 
-			std::cout << "are you sure you want to launch? Y/N" << std::endl;
+			std::cout << "Are you sure you want to launch? Y/N\n";
 			std::cin >> confirm;
 
 			switch (confirm) {
@@ -111,6 +113,10 @@ int gather_user_input(void) {
 
 			return 0;
 
+		}
+		else if (input == 800) {
+			sm.pushEvent(b1_states::b1_event::EV_EMERG);
+			return 0;
 		}
 		else if (input == 69) {
 			sm.pushEvent(b1_states::b1_event::EV_OVR_PR_LOX);

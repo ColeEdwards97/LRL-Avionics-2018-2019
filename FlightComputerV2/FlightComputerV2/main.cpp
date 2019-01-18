@@ -39,9 +39,9 @@ state_machine& sm = state_machine::getInstance();
 // MAIN LOOP
 int main() {
 
-	initialize_pins();
+	std::cout << "[INFO][main.cpp] Starting Flight Computer\n";
 
-	std::cout << "[INFO][main.cpp] Starting Flight Computer" << std::endl;
+	initialize_pins();
 
 	// start the thread(s) that gather system inputs
 	std::thread th_USER_INPUT(gather_user_input);
@@ -56,9 +56,9 @@ int main() {
 
 	// stop program and wait for input
 	// TODO: remove later
-	int i;
-	std::cout << "waiting to end program..." << std::endl;
-	std::cin >> i;
+	std::cout << "Press 'ENTER' to end program...\n";
+	std::cin.ignore();
+	std::cin.ignore();
 	
 	// cleanup the gpio pins
 	cleanup();

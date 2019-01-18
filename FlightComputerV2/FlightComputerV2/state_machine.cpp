@@ -36,6 +36,7 @@ state_machine::state_machine() {
 	// state machine initialization
 	currentState = b1_states::b1_state::ST_INIT;
 	currentEvent = b1_states::b1_event::EV_INIT;
+	pushEvent(currentEvent);
 	previousState = currentState;
 
 	is_running = false;
@@ -47,7 +48,7 @@ void state_machine::run(void) {
 
 	is_running = true;
 
-	std::cout << "starting state machine..." << std::endl;
+	std::cout << "starting state machine...\n";
 
 	// while currentState != ST_TERM
 	//		while !eventQueue.empty()
@@ -58,7 +59,7 @@ void state_machine::run(void) {
 	while (currentState != states.ST_TERM) {
 
 		if (!eventQueue.empty()) {
-			std::cout << "Queue has " << eventQueue.size() << " member(s)" << std::endl;
+			std::cout << "Queue has " << eventQueue.size() << " member(s)\n";
 			currentEvent = eventQueue.front();
 
 			for (int i = 0; i < states.transCount(); i++) {

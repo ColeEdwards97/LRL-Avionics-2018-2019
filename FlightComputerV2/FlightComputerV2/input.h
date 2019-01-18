@@ -14,7 +14,6 @@
 //                be called by threads to recieve various input types
 //
 // GENERAL TODOS
-// TODO: add functions for all possible input types
 //
 // INCLUDES
 #pragma once

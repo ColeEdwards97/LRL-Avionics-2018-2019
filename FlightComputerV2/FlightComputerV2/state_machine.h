@@ -8,7 +8,7 @@
 // University:    California State Polytechnic University, Pomona
 // Author:        Cole Edwards
 // Date Created:  23 October 2018
-// Date Revised:  26 November 2018
+// Date Revised:  17 January 2019
 // File Name:     state_machine.h
 // Description:   Constructor file for state_machine.cpp.  Initializes the 
 //                methods to be used in the state machine.  Implements the 
@@ -26,7 +26,6 @@
 #include <chrono>
 #include <queue>
 #include "b1_states.h"
-#include "b1_hardware.h"
 
 class state_machine {
 
@@ -43,16 +42,15 @@ public:
 
 	// METHODS
 	void run(void);
-	void pushEvent(b1_states::b1_event pushEvent);
+	void pushEvent(b1_states::b1_event);
 	std::queue<b1_states::b1_event> getEventQueue(void);
 
 	bool isRunning(void);
-	bool isReadyToPressurize(void);
-	bool isReadyToLaunch(void);
 
 	// GETTERS
 	b1_states::b1_state getCurrentState(void);
 	b1_states::b1_event getCurrentEvent(void);
+	b1_states::b1_state getPreviousState(void);
 	void setCurrentState(b1_states::b1_state);
 	void setCurrentEvent(b1_states::b1_event);
 
@@ -71,9 +69,8 @@ private:
 
 	b1_states::b1_state currentState;
 	b1_states::b1_event currentEvent;
+	b1_states::b1_state previousState;
 
 	bool is_running;
-	bool ready_pressure;
-	bool ready_launch;
 
 };

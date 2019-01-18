@@ -8,7 +8,7 @@
 // University:    California State Polytechnic University, Pomona
 // Author:        Cole Edwards, Mark Murphy
 // Date Created:  23 October 2018
-// Date Revised:  29 November 2018
+// Date Revised:  17 January 2019
 // File Name:     main.cpp
 // Description:   The main file.  Everything on the Flight Computer is called
 //                from this file.  It initializes the Flight Computer and
@@ -20,6 +20,7 @@
 //
 // GENERAL TODOS
 // TODO: write proper initialization code w/ error handling
+// TODO: write gps code - possibly in python??
 //
 // INCLUDES
 #include <wiringPi.h>
@@ -35,16 +36,14 @@
 // INSTANCE THE STATE MACHINE
 state_machine& sm = state_machine::getInstance();
 
-// TODO: create threads for input
-// TODO: add code to gather output from users and hardware
-//	// data collection should be run in a separate thread(s)
+// MAIN LOOP
 int main() {
 
 	initialize_pins();
 
 	std::cout << "[INFO][main.cpp] Starting Flight Computer" << std::endl;
 
-	// start the thread(s) that gathers system inputs
+	// start the thread(s) that gather system inputs
 	std::thread th_USER_INPUT(gather_user_input);
 	std::thread th_PT_INPUT(gather_PT_input);
 

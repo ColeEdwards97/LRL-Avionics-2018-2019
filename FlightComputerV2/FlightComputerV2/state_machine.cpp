@@ -8,7 +8,7 @@
 // University:    California State Polytechnic University, Pomona
 // Author:        Cole Edwards
 // Date Created:  23 October 2018
-// Date Revised:  29 November 2018
+// Date Revised:  17 January 2019
 // File Name:     state_machine.cpp
 // Description:   Source file for state_machine.h.  Defines the overall behavior
 //                of the Flight Computer.  Essentially, the state machine is the
@@ -35,26 +35,19 @@ state_machine::state_machine() {
 
 	// state machine initialization
 	currentState = b1_states::b1_state::ST_INIT;
-	currentEvent = b1_states::b1_event::EV_NOMINAL;
+	currentEvent = b1_states::b1_event::EV_INIT;
+	previousState = currentState;
 
 	is_running = false;
-	ready_pressure = false;
-	ready_launch = false;
 
 }
 
 // RUN MAIN LOOP
 void state_machine::run(void) {
 
-	// TODO: pop event if it is not used to avoid infinite loop
-
 	is_running = true;
 
 	std::cout << "starting state machine..." << std::endl;
-
-	// initialized values
-	b1_states::b1_state state = currentState;
-	b1_states::b1_event event = currentEvent;
 
 	// while currentState != ST_TERM
 	//		while !eventQueue.empty()
@@ -62,31 +55,22 @@ void state_machine::run(void) {
 	//				if event == currentevent or event == any event
 	//					change the state
 
-	std::cout << "status: " << std::endl;
-	std::cout << "-state: " << static_cast<int>(state) << std::endl;
-	std::cout << "-event: " << static_cast<int>(event) << std::endl;
-
-	while (state != states.ST_TERM) {
+	while (currentState != states.ST_TERM) {
 
 		if (!eventQueue.empty()) {
-
-			std::cout << "Queue has " << eventQueue.size() << " member(s)!" << std::endl;
-			event = eventQueue.front();
-			setCurrentEvent(event);
+			std::cout << "Queue has " << eventQueue.size() << " member(s)" << std::endl;
+			currentEvent = eventQueue.front();
 
 			for (int i = 0; i < states.transCount(); i++) {
 
-				if ((state == states.trans[i].st) || (states.ST_ANY == states.trans[i].st)) {
+				if (currentState == states.trans[i].st || states.ST_ANY == states.trans[i].st) {
 
-					if ((event == states.trans[i].ev) || (states.EV_ANY == states.trans[i].ev)) {
-						state = (states.trans[i].fn)(states.trans[i].new_st);
-						setCurrentState(state);
+					if (currentEvent == states.trans[i].ev || states.EV_ANY == states.trans[i].ev) {
+						previousState = currentState;
+						currentState = (states.trans[i].fn)(states.trans[i].new_st);
 						eventQueue.pop();
 						break;
-					}
-					else {
-						eventQueue.pop();
-						break;
+
 					}
 
 				}
@@ -96,9 +80,7 @@ void state_machine::run(void) {
 		}
 
 	}
-
 	is_running = false;
-
 }
 
 // GETTERS
@@ -110,6 +92,9 @@ b1_states::b1_state state_machine::getCurrentState(void) {
 };
 b1_states::b1_event state_machine::getCurrentEvent(void) {
 	return currentEvent;
+}
+b1_states::b1_state state_machine::getPreviousState(void) {
+	return previousState;
 }
 
 // SETTERS
@@ -126,10 +111,4 @@ void state_machine::pushEvent(b1_states::b1_event pushEvent) {
 }
 bool state_machine::isRunning(void) {
 	return is_running;
-}
-bool state_machine::isReadyToPressurize(void) {
-	return ready_pressure;
-}
-bool state_machine::isReadyToLaunch(void) {
-	return ready_launch;
 }

@@ -70,6 +70,8 @@
     <ClCompile Include="input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pinout.cpp" />
+    <ClCompile Include="pyrovalve.cpp" />
+    <ClCompile Include="solenoid.cpp" />
     <ClCompile Include="state_machine.cpp" />
     <ClCompile Include="test.cpp" />
   </ItemGroup>
@@ -78,6 +80,8 @@
     <ClInclude Include="b1_states.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="pinout.h" />
+    <ClInclude Include="pyrovalve.h" />
+    <ClInclude Include="solenoid.h" />
     <ClInclude Include="state_machine.h" />
   </ItemGroup>
   <ItemDefinitionGroup />

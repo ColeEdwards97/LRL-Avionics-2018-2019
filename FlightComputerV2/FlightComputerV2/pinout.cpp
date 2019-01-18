@@ -8,7 +8,7 @@
 // University:    California State Polytechnic University, Pomona
 // Author:        Cole Edwards
 // Date Created:  06 November 2018
-// Date Revised:  13 November 2018
+// Date Revised:  17 January 2019
 // File Name:     pinout.cpp
 // Description:   Source file for pinout.h.  Initializes the GPIO pins to their
 //                proper state.
@@ -20,16 +20,17 @@
 
 // STRUCTS
 static pins pin_init[6] = {
-	{ PIN_SOL_1,  OUTPUT, HIGH },
-	{ PIN_SOL_2,  OUTPUT, HIGH },
-	{ PIN_VENT_1, OUTPUT, HIGH },
-	{ PIN_VENT_2, OUTPUT, HIGH },
-	{ PIN_PYRO_1, OUTPUT, HIGH },
-	{ PIN_PYRO_2, OUTPUT, HIGH }
+	{ PIN_HELIUM_LOX,  OUTPUT, HIGH },
+	{ PIN_HELIUM_CH4,  OUTPUT, HIGH },
+	{ PIN_VENT_LOX, OUTPUT, HIGH },
+	{ PIN_VENT_CH4, OUTPUT, HIGH },
+	{ PIN_PYRO_LOX, OUTPUT, HIGH },
+	{ PIN_PYRO_CH4, OUTPUT, HIGH }
 };
 
 // METHODS
-// initialize pins
+
+// ... initialize pins ... //
 int initialize_pins() {
 
 	std::cout << "exporting pins" << std::endl;
@@ -48,7 +49,7 @@ int initialize_pins() {
 
 }
 
-// cleanup pins
+// ... cleanup pins ... //
 int cleanup(void) {
 
 	int i;
@@ -62,7 +63,7 @@ int cleanup(void) {
 
 }
 
-// Count the number of pin configurations to set
+// ... Count the number of pin configurations to set ... //
 int pin_count(void) {
 	return (sizeof(pin_init) / sizeof(*pin_init));
 }

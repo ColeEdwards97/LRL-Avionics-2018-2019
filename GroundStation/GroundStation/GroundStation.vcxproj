@@ -65,9 +65,17 @@
     </RemotePostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="gs_hardware.cpp" />
+    <ClCompile Include="gs_states.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="pinout.cpp" />
+    <ClCompile Include="state_machine.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="gs_hardware.h" />
+    <ClInclude Include="gs_states.h" />
+    <ClInclude Include="pinout.h" />
+    <ClInclude Include="state_machine.h" />
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -2,7 +2,9 @@
 #include <wiringPi.h>
 
 int main(void) {
-
+	
+	// TODO: run sm
+	// TODO: spawn threads
 
 	// RUN THERMOCOUPLE PYTHON SCRIPT
 	Py_Initialize();

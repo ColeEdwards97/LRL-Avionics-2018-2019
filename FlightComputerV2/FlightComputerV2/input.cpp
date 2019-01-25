@@ -8,7 +8,7 @@
 // University:    California State Polytechnic University, Pomona
 // Author:        Cole Edwards
 // Date Created:  23 October 2018
-// Date Revised:  17 January 2019
+// Date Revised:  25 January 2019
 // File Name:     input.cpp
 // Description:   Source file for input.h.  Defines functions that will be
 //                called by threads to recieve various input types
@@ -28,7 +28,13 @@ int gather_PT_input(void) {
 	state_machine& sm = state_machine::getInstance();
 
 	// wait for the state machine to start
-	std::this_thread::sleep_for(std::chrono::milliseconds(500));
+	//std::this_thread::sleep_for(std::chrono::seconds(3));
+	std::unique_lock<std::mutex> lock(sm.mtx_isRunning);
+	sm.cv_isRunning.wait(lock);
+
+	std::ofstream data_file;
+	data_file.open("pt_data.txt");
+	data_file << "Pressure Transducer Data Log\n";
 
 	int pinbase = 100;
 	int i2cloc = 0x48;
@@ -37,8 +43,8 @@ int gather_PT_input(void) {
 	float a2dvol;
 	float a2dpsi;
 	//float vref = 5;
-	int max_LOX_pressure = 340;
-	int max_CH4_pressure = 340;
+	int max_LOX_pressure = -10;
+	int max_CH4_pressure = -15;
 
 	if (ads1115Setup(pinbase, i2cloc) < 0) {
 		std::cout << "Failed setting up I2C device :(\n";
@@ -54,27 +60,38 @@ int gather_PT_input(void) {
 
 			for (int j : chan) {
 
-				a2dval = analogRead(pinbase + chan[j]);
+				a2dval = analogRead(pinbase + j);
 				//a2dvol = a2dval * vref / (pow(2, (adcbits - 1)) - 1);
 				a2dvol = a2dval * 4.096 / (pow(2, (adcbits - 1)) - 1);
 				a2dpsi = a2dvol * 198.66f - 112.66f;
 
 				//std::cout << "chan " << j << " " << a2dpsi << " psi" << std::endl;
 
-				if (chan[j] == 0) {
+				if (j == 0) {
+
+					data_file << "chan " << j << "\t" << a2dpsi << "\t";
+
 					if (a2dpsi >= max_LOX_pressure) {
-						sm.pushEvent(b1_states::b1_event::EV_OVR_PR_LOX);
+						if (!sm.isVentingLOX()) {
+							sm.pushEvent(b1_states::b1_event::EV_OVR_PR_LOX);
+						}
 					}
 				}
-				if (chan[j] == 1) {
+				if (j == 1) {
+
+					data_file << "chan " << j << "\t" << a2dpsi << "\n";
+
 					if (a2dpsi >= max_CH4_pressure) {
-						sm.pushEvent(b1_states::b1_event::EV_OVR_PR_CH4);
+						if (!sm.isVentingCH4()) {
+							sm.pushEvent(b1_states::b1_event::EV_OVR_PR_CH4);
+						}
 					}
 				}
 
 			}
 
 		}
+		data_file.close();
 		return 0;
 	}
 
@@ -87,7 +104,8 @@ int gather_user_input(void) {
 	state_machine& sm = state_machine::getInstance();
 
 	// wait for the state machine to start
-	std::this_thread::sleep_for(std::chrono::milliseconds(500));
+	std::unique_lock<std::mutex> lock(sm.mtx_isRunning);
+	sm.cv_isRunning.wait(lock);
 
 	int input;
 	char confirm;
@@ -117,10 +135,6 @@ int gather_user_input(void) {
 		else if (input == 800) {
 			sm.pushEvent(b1_states::b1_event::EV_EMERG);
 			return 0;
-		}
-		else if (input == 69) {
-			sm.pushEvent(b1_states::b1_event::EV_OVR_PR_LOX);
-			sm.pushEvent(b1_states::b1_event::EV_OVR_PR_CH4);
 		}
 		else {
 			sm.pushEvent(static_cast<b1_states::b1_event>(input));

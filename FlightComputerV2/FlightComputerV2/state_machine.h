@@ -25,6 +25,7 @@
 #include <thread>
 #include <chrono>
 #include <queue>
+#include <condition_variable>
 #include "b1_states.h"
 
 class state_machine {
@@ -46,6 +47,8 @@ public:
 	std::queue<b1_states::b1_event> getEventQueue(void);
 
 	bool isRunning(void);
+	bool isVentingLOX(void);
+	bool isVentingCH4(void);
 
 	// GETTERS
 	b1_states::b1_state getCurrentState(void);
@@ -53,6 +56,13 @@ public:
 	b1_states::b1_state getPreviousState(void);
 	void setCurrentState(b1_states::b1_state);
 	void setCurrentEvent(b1_states::b1_event);
+
+	// VARIABLES
+	std::condition_variable cv_isRunning;
+	std::mutex mtx_isRunning;
+
+	bool bVentingLOX;
+	bool bVentingCH4;
 
 private:
 

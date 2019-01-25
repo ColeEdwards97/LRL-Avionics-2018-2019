@@ -8,7 +8,7 @@
 // University:    California State Polytechnic University, Pomona
 // Author:        Cole Edwards
 // Date Created:  23 October 2018
-// Date Revised:  17 January 2019
+// Date Revised:  25 January 2019
 // File Name:     b1_states.cpp
 // Description:   Source file for b1_states.h.  Defines the functions to get 
 //                and set the state of the Bronco One.
@@ -151,8 +151,8 @@ b1_states::b1_state b1_states::fn_launch2term(b1_states::b1_state new_state) {
 
 	helium_LOX->open();
 	helium_CH4->open();
-	//vent_LOX->open();
-	//vent_CH4->open();
+	vent_LOX->open();
+	vent_CH4->open();
 
 	std::cout << "Bronco One has successfully launched...\n";
 	std::cout << "Good luck on recovery :)\n";
@@ -163,11 +163,11 @@ b1_states::b1_state b1_states::fn_launch2term(b1_states::b1_state new_state) {
 
 // ... fn_vent_LOX ... //
 b1_states::b1_state b1_states::fn_vent_LOX(b1_states::b1_state new_state) {
-	
+
 	std::cout << "Venting LOX line\n";
 
 	std::thread(vent_LOX_pressure).detach();
-	
+
 	return state_mach.getPreviousState();
 
 }
@@ -178,6 +178,7 @@ b1_states::b1_state b1_states::fn_vent_CH4(b1_states::b1_state new_state) {
 	std::cout << "Venting CH4 line\n";
 
 	std::thread(vent_CH4_pressure).detach();
+	
 
 	return state_mach.getPreviousState();
 
@@ -225,24 +226,28 @@ b1_states::b1_state b1_states::fn_ERROR(b1_states::b1_state new_state) {
 // ... vent_LOX - to be spawned in a thread to prevent backing up the state machine ... //
 void b1_states::vent_LOX_pressure(void) {
 
+	state_mach.bVentingLOX = true;
 	// open LOX vent valve
 	vent_LOX->open();
 	// wait for 3 seconds
 	std::this_thread::sleep_for(std::chrono::seconds(3));
 	// close LOX vent valve
 	vent_LOX->close();
+	state_mach.bVentingLOX = false;
 
 }
 
 // ... vent_CH4 - to be spawned in a thread to prevent backing up the state machine ... //
 void b1_states::vent_CH4_pressure(void) {
 
+	state_mach.bVentingCH4 = true;
 	// open CH4 vent valve
 	vent_CH4->open();
 	// wait for 3 seconds
 	std::this_thread::sleep_for(std::chrono::seconds(3));
 	// close CH4 vent valve
 	vent_CH4->close();
+	state_mach.bVentingCH4 = false;
 
 }
 

@@ -8,7 +8,7 @@
 // University:    California State Polytechnic University, Pomona
 // Author:        Cole Edwards
 // Date Created:  23 October 2018
-// Date Revised:  17 January 2019
+// Date Revised:  25 January 2019
 // File Name:     state_machine.cpp
 // Description:   Source file for state_machine.h.  Defines the overall behavior
 //                of the Flight Computer.  Essentially, the state machine is the
@@ -40,6 +40,8 @@ state_machine::state_machine() {
 	previousState = currentState;
 
 	is_running = false;
+	bVentingLOX = false;
+	bVentingCH4 = false;
 
 }
 
@@ -47,6 +49,7 @@ state_machine::state_machine() {
 void state_machine::run(void) {
 
 	is_running = true;
+	cv_isRunning.notify_all();
 
 	std::cout << "starting state machine...\n";
 
@@ -112,4 +115,10 @@ void state_machine::pushEvent(b1_states::b1_event pushEvent) {
 }
 bool state_machine::isRunning(void) {
 	return is_running;
+}
+bool state_machine::isVentingLOX(void) {
+	return bVentingLOX;
+}
+bool state_machine::isVentingCH4(void) {
+	return bVentingCH4;
 }

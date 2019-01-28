@@ -8,7 +8,7 @@
 // University:    California State Polytechnic University, Pomona
 // Author:        Cole Edwards
 // Date Created:  17 January 2019
-// Date Revised:  17 January 2019
+// Date Revised:  28 January 2019
 // File Name:     solenoid.cpp
 // Description:   Source file for solenoid.h.  Defines the functions that set
 //                the state of the solenoids.
@@ -18,20 +18,30 @@
 //
 // INCLUDES
 #include "solenoid.h"
+#include "state_machine.h"
+
+// INSTANCE STATE MACHINE
+state_machine& sol_sm = state_machine::getInstance();
 
 
 // CONSTRUCTORS
 solenoid::solenoid(int pin, solenoid::solenoidType type) {
 
-	gpio_pin = pin;
+	this->gpio_pin = pin;
 	this->type = type;
 	setCurrentState(solenoidState::CLOSED);
 
 }
-solenoid::solenoid(int pin, solenoid::solenoidType type, solenoid::solenoidState state) {
+solenoid::solenoid(int pin, 
+	solenoid::solenoidType type, 
+	solenoid::solenoidState state,
+	solenoid::solenoidUse use, 
+	solenoid::solenoidLine line) {
 
-	gpio_pin = pin;
+	this->gpio_pin = pin;
 	this->type = type;
+	this->use = use;
+	this->line = line;
 	setCurrentState(state);
 
 }
@@ -52,7 +62,22 @@ void solenoid::open(void) {
 	default:
 		break;
 	}
-	state = solenoidState::OPEN;
+	this->state = solenoidState::OPEN;
+
+	// tell the state machine if we are venting or not
+	if (this->use == solenoidUse::VENT) {
+		switch (this->line)
+		{
+		case solenoid::LOX:
+			sol_sm.bVentingLOX = true;
+			break;
+		case solenoid::CH4:
+			sol_sm.bVentingCH4 = true;
+			break;
+		default:
+			break;
+		}
+	}
 
 }
 
@@ -70,13 +95,29 @@ void solenoid::close(void) {
 	default:
 		break;
 	}
-	state = solenoidState::CLOSED;
+	this->state = solenoidState::CLOSED;
+
+	// tell the state machine if we are venting or not
+	if (this->use == solenoidUse::VENT) {
+		switch (line)
+		{
+		case solenoid::LOX:
+			sol_sm.bVentingLOX = false;
+			break;
+		case solenoid::CH4:
+			sol_sm.bVentingCH4 = false;
+			break;
+		default:
+			break;
+		}
+	}
+
 }
 
 // ... toggle the solenoid's state ... //
 void solenoid::toggle(void) {
 	
-	switch (state)
+	switch (this->state)
 	{
 	case solenoid::OPEN:
 		this->close();
@@ -92,7 +133,7 @@ void solenoid::toggle(void) {
 
 // ... get the current solenoid state ... //
 solenoid::solenoidState solenoid::getCurrentState(void) {
-	return state;
+	return this->state;
 }
 
 // ... set the current solenoid state ... //

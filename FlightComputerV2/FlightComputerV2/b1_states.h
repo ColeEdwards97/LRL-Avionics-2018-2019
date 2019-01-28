@@ -8,7 +8,7 @@
 // University:    California State Polytechnic University, Pomona
 // Author:        Cole Edwards
 // Date Created:  23 October 2018
-// Date Revised:  17 January 2019
+// Date Revised:  28 January 2019
 // File Name:     b1_states.h
 // Description:   Constructor file for b1_states.cpp.  Defines the possible
 //                states, events, transitions, and transition functions for the
@@ -55,6 +55,7 @@ public:
 		ST_READY2LAUNCH = 4,
 		ST_LAUNCH = 5,
 		ST_VENT = 700,
+		ST_CANCEL = 900,
 		ST_TERM = 9999
 
 	};
@@ -71,7 +72,8 @@ public:
 		EV_BURNOUT = 6,
 		EV_OVR_PR_LOX = 701,
 		EV_OVR_PR_CH4 = 702,
-		EV_EMERG = 800
+		EV_EMERG = 800,
+		EV_CANCEL = 900
 
 	};
 
@@ -84,7 +86,7 @@ public:
 		b1_state(*fn)(b1_state);
 	} tTransition;
 
-	b1_states::tTransition trans[11] = {
+	b1_states::tTransition trans[12] = {
 
 		{ ST_INIT,			EV_INIT,		ST_INIT,			&fn_init				 },	// START
 		{ ST_INIT,			EV_START,		ST_IDLE,			&fn_init2idle			 }, // INITIALIZE
@@ -97,6 +99,7 @@ public:
 		{ ST_ANY,			EV_OVR_PR_LOX,	ST_ANY,				&fn_vent_LOX			 }, // VENT LOX
 		{ ST_ANY,			EV_OVR_PR_CH4,	ST_ANY,				&fn_vent_CH4			 }, // VENT CH4
 		{ ST_ANY,			EV_EMERG,		ST_TERM,			&fn_emergency			 },	// DRAIN
+		{ ST_ANY,			EV_CANCEL,		ST_TERM,				&fn_cancel			 }, // CANCEL
 		{ ST_ANY,			EV_ANY,			ST_TERM,			&fn_ERROR				 }	// ERROR
 
 	};
@@ -112,13 +115,14 @@ public:
 	static b1_state fn_vent_LOX(b1_state);
 	static b1_state fn_vent_CH4(b1_state);
 	static b1_state fn_emergency(b1_state);
+	static b1_state fn_cancel(b1_state);
 	static b1_state fn_ERROR(b1_state);
 
 	static void vent_LOX_pressure(void);
 	static void vent_CH4_pressure(void);
-
 	static void launch_countdown(void);
 	static void burnout_timer(void);
+	static void drain_lines(void);
 
 	int transCount(void);
 

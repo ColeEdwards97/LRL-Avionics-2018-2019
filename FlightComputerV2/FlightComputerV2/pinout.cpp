@@ -56,7 +56,7 @@ int cleanup(void) {
 	for (i = 0; i < pin_count(); i++) {
 
 		digitalWrite(pin_init[i].pin, LOW);
-		// TODO: this will open all valves... should we open them all at the end?
+		// TODO: this will return all hardware to their idle state... should we do this?
 	}
 
 	return 0;

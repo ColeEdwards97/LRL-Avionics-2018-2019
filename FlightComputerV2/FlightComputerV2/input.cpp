@@ -28,9 +28,9 @@ int gather_PT_input(void) {
 	state_machine& sm = state_machine::getInstance();
 
 	// wait for the state machine to start
-	//std::this_thread::sleep_for(std::chrono::seconds(3));
-	std::unique_lock<std::mutex> lock(sm.mtx_isRunning);
-	sm.cv_isRunning.wait(lock);
+	std::this_thread::sleep_for(std::chrono::seconds(2));
+	//std::unique_lock<std::mutex> lock(sm.mtx_isRunning);
+	//sm.cv_isRunning.wait(lock);
 
 	std::ofstream data_file;
 	data_file.open("pt_data.txt");
@@ -43,8 +43,8 @@ int gather_PT_input(void) {
 	float a2dvol;
 	float a2dpsi;
 	//float vref = 5;
-	int max_LOX_pressure = -10;
-	int max_CH4_pressure = -15;
+	int max_LOX_pressure = 325;
+	int max_CH4_pressure = 330;
 
 	if (ads1115Setup(pinbase, i2cloc) < 0) {
 		std::cout << "Failed setting up I2C device :(\n";
@@ -72,6 +72,7 @@ int gather_PT_input(void) {
 					data_file << "chan " << j << "\t" << a2dpsi << "\t";
 
 					if (a2dpsi >= max_LOX_pressure) {
+						std::cout << "LOX line is at operating pressure";
 						if (!sm.isVentingLOX()) {
 							sm.pushEvent(b1_states::b1_event::EV_OVR_PR_LOX);
 						}
@@ -82,6 +83,7 @@ int gather_PT_input(void) {
 					data_file << "chan " << j << "\t" << a2dpsi << "\n";
 
 					if (a2dpsi >= max_CH4_pressure) {
+						std::cout << "CH4 line is at operating pressure";
 						if (!sm.isVentingCH4()) {
 							sm.pushEvent(b1_states::b1_event::EV_OVR_PR_CH4);
 						}
@@ -126,22 +128,19 @@ int gather_user_input(void) {
 				sm.pushEvent(static_cast<b1_states::b1_event>(input));
 				break;
 			case 'N':
+				sm.pushEvent(b1_states::b1_event::EV_CANCEL);
+				break;
+			default:
 				break;
 			}
 
 			return 0;
 
 		}
-		else if (input == 800) {
-			sm.pushEvent(b1_states::b1_event::EV_EMERG);
-			return 0;
-		}
 		else {
 			sm.pushEvent(static_cast<b1_states::b1_event>(input));
 		}
 
 	}
-
 	return 0;
-
 }

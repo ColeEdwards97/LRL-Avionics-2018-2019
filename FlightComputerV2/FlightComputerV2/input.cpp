@@ -8,7 +8,7 @@
 // University:    California State Polytechnic University, Pomona
 // Author:        Cole Edwards
 // Date Created:  23 October 2018
-// Date Revised:  25 January 2019
+// Date Revised:  28 January 2019
 // File Name:     input.cpp
 // Description:   Source file for input.h.  Defines functions that will be
 //                called by threads to recieve various input types
@@ -32,10 +32,12 @@ int gather_PT_input(void) {
 	//std::unique_lock<std::mutex> lock(sm.mtx_isRunning);
 	//sm.cv_isRunning.wait(lock);
 
+	// create a file to save data to
 	std::ofstream data_file;
 	data_file.open("pt_data.txt");
 	data_file << "Pressure Transducer Data Log\n";
 
+	// define ADC parameters
 	int pinbase = 100;
 	int i2cloc = 0x48;
 	int adcbits = 16;
@@ -46,6 +48,7 @@ int gather_PT_input(void) {
 	int max_LOX_pressure = 325;
 	int max_CH4_pressure = 330;
 
+	// try to connect to the ADC
 	if (ads1115Setup(pinbase, i2cloc) < 0) {
 		std::cout << "Failed setting up I2C device :(\n";
 		return -1;
@@ -73,9 +76,9 @@ int gather_PT_input(void) {
 
 					if (a2dpsi >= max_LOX_pressure) {
 						std::cout << "LOX line is at operating pressure";
-						if (!sm.isVentingLOX()) {
+						//if (!sm.isVentingLOX()) {
 							sm.pushEvent(b1_states::b1_event::EV_OVR_PR_LOX);
-						}
+						//}
 					}
 				}
 				if (j == 1) {
@@ -84,9 +87,9 @@ int gather_PT_input(void) {
 
 					if (a2dpsi >= max_CH4_pressure) {
 						std::cout << "CH4 line is at operating pressure";
-						if (!sm.isVentingCH4()) {
+						//if (!sm.isVentingCH4()) {
 							sm.pushEvent(b1_states::b1_event::EV_OVR_PR_CH4);
-						}
+						//}
 					}
 				}
 
@@ -106,8 +109,9 @@ int gather_user_input(void) {
 	state_machine& sm = state_machine::getInstance();
 
 	// wait for the state machine to start
-	std::unique_lock<std::mutex> lock(sm.mtx_isRunning);
-	sm.cv_isRunning.wait(lock);
+	std::this_thread::sleep_for(std::chrono::seconds(2));
+	//std::unique_lock<std::mutex> lock(sm.mtx_isRunning);
+	//sm.cv_isRunning.wait(lock);
 
 	int input;
 	char confirm;
@@ -133,8 +137,6 @@ int gather_user_input(void) {
 			default:
 				break;
 			}
-
-			return 0;
 
 		}
 		else {

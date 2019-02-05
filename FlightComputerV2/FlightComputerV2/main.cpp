@@ -8,7 +8,7 @@
 // University:    California State Polytechnic University, Pomona
 // Author:        Cole Edwards, Mark Murphy
 // Date Created:  23 October 2018
-// Date Revised:  25 January 2019
+// Date Revised:  28 January 2019
 // File Name:     main.cpp
 // Description:   The main file.  Everything on the Flight Computer is called
 //                from this file.  It initializes the Flight Computer and
@@ -48,7 +48,7 @@ int main() {
 	std::thread th_PT_INPUT(gather_PT_input);
 
 	// wait for threads to initialize
-	std::this_thread::sleep_for(std::chrono::seconds(3));
+	//std::this_thread::sleep_for(std::chrono::seconds(5));
 
 	// run the finite state machine
 	sm.run();

@@ -69,10 +69,10 @@ void solenoid::open(void) {
 		switch (this->line)
 		{
 		case solenoid::LOX:
-			sol_sm.bVentingLOX = true;
+			//sol_sm.setIsVentingLOX(true);
 			break;
 		case solenoid::CH4:
-			sol_sm.bVentingCH4 = true;
+			//sol_sm.setIsVentingCH4(true);
 			break;
 		default:
 			break;
@@ -102,10 +102,10 @@ void solenoid::close(void) {
 		switch (line)
 		{
 		case solenoid::LOX:
-			sol_sm.bVentingLOX = false;
+			//sol_sm.setIsVentingLOX(false);
 			break;
 		case solenoid::CH4:
-			sol_sm.bVentingCH4 = false;
+			//sol_sm.setIsVentingCH4(false);
 			break;
 		default:
 			break;

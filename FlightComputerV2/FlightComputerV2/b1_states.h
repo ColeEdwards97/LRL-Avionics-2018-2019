@@ -31,6 +31,7 @@
 #include "pyrovalve.h"
 #include "pinout.h"
 
+class state_machine;
 
 class b1_states {
 
@@ -99,7 +100,7 @@ public:
 		{ ST_ANY,			EV_OVR_PR_LOX,	ST_ANY,				&fn_vent_LOX			 }, // VENT LOX
 		{ ST_ANY,			EV_OVR_PR_CH4,	ST_ANY,				&fn_vent_CH4			 }, // VENT CH4
 		{ ST_ANY,			EV_EMERG,		ST_TERM,			&fn_emergency			 },	// DRAIN
-		{ ST_ANY,			EV_CANCEL,		ST_TERM,				&fn_cancel			 }, // CANCEL
+		{ ST_ANY,			EV_CANCEL,		ST_TERM,			&fn_cancel				 }, // CANCEL
 		{ ST_ANY,			EV_ANY,			ST_TERM,			&fn_ERROR				 }	// ERROR
 
 	};

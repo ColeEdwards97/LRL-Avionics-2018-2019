@@ -32,6 +32,7 @@ state_machine& state_mach = state_machine::getInstance();
 
 // CONSTRUCTOR
 b1_states::b1_states() {
+
 }
 
 // METHODS
@@ -121,7 +122,7 @@ b1_states::b1_state b1_states::fn_ready2launch(b1_states::b1_state new_state) {
 
 }
 
-// ... fn_launch2cruise ... //
+// ... fn_launch2term ... //
 b1_states::b1_state b1_states::fn_launch2term(b1_states::b1_state new_state) {
 
 	helium_LOX->open();

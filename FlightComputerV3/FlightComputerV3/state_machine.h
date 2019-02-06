@@ -8,8 +8,8 @@
 #include <queue>
 #include <condition_variable>
 
-// forward declaration
-class b1_states;
+#include "b1_states.h"
+
 
 class state_machine {
 
@@ -57,4 +57,3 @@ private:
 	bool bisRunning;
 
 };
-

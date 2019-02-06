@@ -27,7 +27,7 @@
 #include <queue>
 #include <condition_variable>
 
-class b1_states;
+#include "b1_states.h"
 
 class state_machine {
 

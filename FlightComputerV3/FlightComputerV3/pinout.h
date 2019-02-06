@@ -7,7 +7,6 @@
 #include <wiringSerial.h>
 #include <wiringShift.h>
 
-#include "logger.h"
 
 // ENUMS
 enum PIN_ALIAS {

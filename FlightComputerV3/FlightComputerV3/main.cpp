@@ -5,12 +5,16 @@
 #include <chrono>
 #include <wiringPi.h>
 
+#include "state_machine.h"
 #include "input.h"
-#include "pinout.h"
+
+
+// Initialize State Machine
+state_machine& sm = state_machine::getInstance();
 
 int main(void) {
-
-	std::cout << info(__FILE__, "Started Flight Computer V3");
+	
+	std::cout << "Started Flight Computer\n";
 
 	// Initialize GPIO pins
 	initializePins();
@@ -19,9 +23,10 @@ int main(void) {
 	std::thread tPressureTransducerData(getPressureTransducerReadings);
 	std::thread tUserInput(getUserInput);
 
+	std::this_thread::sleep_for(std::chrono::seconds(2));
 
-	std::this_thread::sleep_for(std::chrono::seconds(3));
-
+	// Start the state machine
+	sm.run();
 
 	// Join input threads
 	tPressureTransducerData.join();

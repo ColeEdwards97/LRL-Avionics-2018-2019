@@ -1,5 +1,6 @@
 #include "pinout.h"
 
+
 // STRUCTS
 static pins pin_init[6] = {
 	{ PIN_HELIUM_LOX,  OUTPUT, HIGH },
@@ -15,7 +16,7 @@ static pins pin_init[6] = {
 // ... Initialize GPIO pins to initial states ... //
 int initializePins() {
 
-	std::cout << info(__FILE__, "Exporting GPIO pins...");
+	std::cout << "Exporting GPIO pins...\n";
 
 	wiringPiSetupGpio();
 
@@ -25,7 +26,7 @@ int initializePins() {
 		digitalWrite(pin_init[i].pin, pin_init[i].state); // set the default state of the pin
 	}
 
-	std::cout << info(__FILE__, "GPIO pins exported successfully");
+	std::cout << "GPIO pins exported successfully\n";
 
 	return 0;
 

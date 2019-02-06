@@ -28,7 +28,6 @@
 //
 // INCLUDES
 #include "state_machine.h"
-#include "b1_states.h" // for forward declaration
 
 
 // CONSTRUCTOR

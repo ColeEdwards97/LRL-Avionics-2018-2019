@@ -1,14 +1,26 @@
 #include "state_machine.h"
-#include "b1_states.h"
 
+b1_states& states = b1_states::getInstance();
 
 // CONSTRUCTOR
 state_machine::state_machine() {
+
+	currentState = states.ST_INIT;
+	currentEvent = states.EV_INIT;
+	pushEvent(currentEvent);
+	previousState = currentState;
+
+	bisRunning = false;
 
 }
 
 // MAIN LOOP
 void state_machine::run(void) {
+
+	bisRunning = true;
+	cv_isRunning.notify_all();
+
+	std::cout << "Starting State Machine\n";
 
 	// while currentState != ST_TERM
 	//		while !eventQueue.empty()
@@ -16,7 +28,29 @@ void state_machine::run(void) {
 	//				if event == currentevent or event == any event
 	//					change the state
 
+	while (currentState != states.ST_TERM) {
 
+		if (!eventQueue.empty()) {
+
+			currentEvent = eventQueue.front();
+
+			for (int i = 0; i < states.transCount(); i++) {
+
+				if (currentState == states.trans[i].st || states.ST_ANY == states.trans[i].st) {
+					if (currentEvent == states.trans[i].ev || states.EV_ANY == states.trans[i].ev) {
+						previousState = currentState;
+						currentState = (states.trans[i].fn)(states.trans[i].new_st);
+						eventQueue.pop();
+						break;
+					}
+				}
+
+			}
+
+		}
+
+	}
+	bisRunning = false;
 }
 
 // METHODS

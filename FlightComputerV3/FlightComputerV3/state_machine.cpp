@@ -1,6 +1,8 @@
 #include "state_machine.h"
 
+// instance b1_states
 b1_states& states = b1_states::getInstance();
+
 
 // CONSTRUCTOR
 state_machine::state_machine() {
@@ -20,8 +22,8 @@ void state_machine::run(void) {
 	bisRunning = true;
 	cv_isRunning.notify_all();
 
-	std::cout << "Starting State Machine\n";
-
+	//std::cout << "Starting State Machine\n";
+	logger::info(__FILE__, "Starting State Machine");
 	// while currentState != ST_TERM
 	//		while !eventQueue.empty()
 	//			if state == currentstate or state == any state

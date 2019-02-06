@@ -11,7 +11,8 @@ int getPressureTransducerReadings(void) {
 	b1_states& states = b1_states::getInstance();
 
 	input_sm.cv_isRunning.wait(lock, [] {return input_sm.isRunning(); });
-	std::cout << "Getting Pressure Transducer Readings..\n";
+	//std::cout << "Getting Pressure Transducer Readings..\n";
+	logger::info(__FILE__, "Getting Pressure Transducer Readings");
 	lock.unlock();
 
 	// DATA FILE FOR LOGGING
@@ -31,12 +32,14 @@ int getPressureTransducerReadings(void) {
 
 	// try to connect to the ADC
 	if (ads1115Setup(pinbase, i2cloc) < 0) {
-		std::cout << "Failed setting up I2C device :(\n";
+		//std::cout << "Failed setting up I2C device :(\n";
+		logger::warn(__FILE__, "Failed setting up I2C device :(");
 		return -1;
 	}
 	else {
 
-		std::cout << "Reading PT data...\n";
+		//std::cout << "Reading PT data...\n";
+		logger::info(__FILE__, "Reading PT data");
 
 		int chan[2] = { 0,1 };
 
@@ -54,7 +57,8 @@ int getPressureTransducerReadings(void) {
 					data_file << time << "\t" << a2dpsi << "\t";
 
 					if (a2dpsi >= max_LOX_pressure) {
-						std::cout << "LOX line is at operating pressure";
+						//std::cout << "LOX line is at operating pressure";
+						logger::warn(__FILE__, "LOX line is at operating pressure");
 						if (!states.vent_LOX->isOpen()) {
 							input_sm.pushEvent(states.EV_OVR_PR_LOX);
 						}
@@ -66,7 +70,8 @@ int getPressureTransducerReadings(void) {
 					data_file << a2dpsi << "\n";
 
 					if (a2dpsi >= max_CH4_pressure) {
-						std::cout << "CH4 line is at operating pressure";
+						//std::cout << "CH4 line is at operating pressure";
+						logger::warn(__FILE__, "CH4 line is at operating pressure");
 						if (!states.vent_CH4->isOpen()) {
 							input_sm.pushEvent(states.EV_OVR_PR_CH4);
 						}
@@ -79,11 +84,10 @@ int getPressureTransducerReadings(void) {
 		}
 
 	}
-
-	std::cout << "Gathered Pressure Transducer Readings\n";
+	//std::cout << "Gathered Pressure Transducer Readings\n";
+	logger::info(__FILE__, "Gathered Pressure Transducer Readings");
 	data_file.close();
 	return 0;
-
 }
 
 // ... Read User Input ... //
@@ -92,7 +96,8 @@ int getUserInput(void) {
 	b1_states& states = b1_states::getInstance();
 	
 	input_sm.cv_isRunning.wait(lock, [] {return input_sm.isRunning(); });
-	std::cout << "Gathering User Input...\n";
+	//std::cout << "Gathering User Input...\n";
+	logger::info(__FILE__, "Gathering User Input");
 
 	int input;
 	char confirm;
@@ -103,7 +108,8 @@ int getUserInput(void) {
 
 		if (static_cast<b1_states::b1_event>(input) == b1_states::EV_LAUNCH) {
 
-			std::cout << "Are you sure you want to launch? Y/N\n";
+			//std::cout << "Are you sure you want to launch? Y/N\n";
+			logger::info(__FILE__, "Are you sure you want to launch? Y/N");
 			std::cin >> confirm;
 
 			switch (confirm) {
@@ -123,6 +129,7 @@ int getUserInput(void) {
 		}
 
 	}
-	std::cout << "Gathered User Input\n";
+	//std::cout << "Gathered User Input\n";
+	logger::info(__FILE__, "Gathered User Input");
 	return 0;
 }

@@ -9,6 +9,7 @@
 
 #include "solenoid.h"
 #include "pyrovalve.h"
+#include "logger.h"
 
 class state_machine;
 

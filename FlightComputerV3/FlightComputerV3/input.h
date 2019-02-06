@@ -12,6 +12,8 @@
 #include <condition_variable>
 #include <ads1115.h>
 
+#include "logger.h"
+
 
 // Forward Declaration
 class b1_states;

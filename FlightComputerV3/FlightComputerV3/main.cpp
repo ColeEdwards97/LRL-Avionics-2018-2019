@@ -7,14 +7,15 @@
 
 #include "state_machine.h"
 #include "input.h"
+#include "logger.h"
 
-
-// Initialize State Machine
-state_machine& sm = state_machine::getInstance();
 
 int main(void) {
 	
-	std::cout << "Started Flight Computer\n";
+	logger::info(__FILE__, "Started Flight Computer");
+
+	// Initialize State Machine
+	state_machine& sm = state_machine::getInstance();
 
 	// Initialize GPIO pins
 	initializePins();
@@ -22,8 +23,6 @@ int main(void) {
 	// Create input threads
 	std::thread tPressureTransducerData(getPressureTransducerReadings);
 	std::thread tUserInput(getUserInput);
-
-	std::this_thread::sleep_for(std::chrono::seconds(2));
 
 	// Start the state machine
 	sm.run();
@@ -33,6 +32,7 @@ int main(void) {
 	tUserInput.join();
 
 	// Wait to exit
+	std::cin.ignore();
 	std::cin.ignore();
 
 	return 0;

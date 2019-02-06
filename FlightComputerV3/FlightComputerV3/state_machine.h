@@ -9,6 +9,7 @@
 #include <condition_variable>
 
 #include "b1_states.h"
+#include "logger.h"
 
 
 class state_machine {

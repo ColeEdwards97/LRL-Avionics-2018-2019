@@ -24,7 +24,7 @@ b1_states::b1_states() {
 
 // ... fn_init_init ... //
 b1_states::b1_state b1_states::fn_init_init(b1_states::b1_state nextState) {
-	std::cout << "State Machine started successfully. All valves in their unpowered states\n";
+	logger::info(__FILE__, "State Machine started successfully. All valves in their unpowered states");
 	return nextState;
 }
 
@@ -36,8 +36,8 @@ b1_states::b1_state b1_states::fn_init_idle(b1_states::b1_state nextState) {
 
 	vent_LOX->close();
 	vent_CH4->close();
-	
-	std::cout << "Helium Valves closed. Vent Valves closed.\n";
+
+	logger::info(__FILE__, "Helium Valves closed. Vent Valves closed.");
 	return nextState;
 }
 
@@ -47,7 +47,8 @@ b1_states::b1_state b1_states::fn_idle_fill(b1_states::b1_state nextState) {
 	vent_LOX->open();
 	vent_CH4->open();
 	
-	std::cout << "Helium Valves Closed, Vent Valves Open\nBegin Filling Sequence\n";
+	logger::info(__FILE__, "Helium Valves Closed. Vent Valves open.");
+	logger::info(__FILE__, "Begin Filling Sequence.");
 	return nextState;
 }
 
@@ -62,13 +63,17 @@ b1_states::b1_state b1_states::fn_fill_pressurize(b1_states::b1_state nextState)
 	vent_LOX->close();
 	vent_CH4->close();
 
-	std::cout << "Bronco One is being pressurized...\nContinue when pressurization is finished\n";
+	//std::cout << "Bronco One is being pressurized...\nContinue when pressurization is finished\n";
+	logger::info(__FILE__, "Bronco One is being pressurized...");
+	logger::info(__FILE__, "Continue when pressurization is finished.");
 	return nextState;
 }
 
 // ... fn_pressurize_pressurized ... //
 b1_states::b1_state b1_states::fn_pressurize_pressurized(b1_states::b1_state nextState) {
-	std::cout << "Bronco One is pressurized and ready to launch\nWaiting on your go...\n";
+	//std::cout << "Bronco One is pressurized and ready to launch\nWaiting on your go...\n";
+	logger::info(__FILE__, "Bronco One is pressurized and ready to launch.");
+	logger::info(__FILE__, "Waiting on your go...");
 	return nextState;
 }
 
@@ -96,15 +101,18 @@ b1_states::b1_state b1_states::fn_launch_term(b1_states::b1_state nextState) {
 	vent_LOX->open();
 	vent_CH4->open();
 
-	std::cout << "Bronco One has successfully launched...\n";
-	std::cout << "Good luck on recovery :)\n";
+	//std::cout << "Bronco One has successfully launched...\n";
+	//std::cout << "Good luck on recovery :)\n";
+	logger::info(__FILE__, "Bronco One has successfully launched!");
+	logger::info(__FILE__, "Good luck on recovery :)");
 	return nextState;
 }
 
 // ... fn_vent_LOX ... //
 b1_states::b1_state b1_states::fn_vent_LOX(b1_states::b1_state nextState) {
 
-	std::cout << "Venting LOX line\n";
+	//std::cout << "Venting LOX line\n";
+	logger::info(__FILE__, "Venting LOX line");
 	std::thread(vent_LOX_pressure).detach();
 	return sm_st.getPreviousState();
 
@@ -113,7 +121,8 @@ b1_states::b1_state b1_states::fn_vent_LOX(b1_states::b1_state nextState) {
 // ... fn_vent_CH4 ... //
 b1_states::b1_state b1_states::fn_vent_CH4(b1_states::b1_state nextState) {
 
-	std::cout << "Venting CH4 line\n";
+	//std::cout << "Venting CH4 line\n";
+	logger::info(__FILE__, "Venting CH4 line");
 	std::thread(vent_CH4_pressure).detach();
 	return sm_st.getPreviousState();
 
@@ -122,7 +131,8 @@ b1_states::b1_state b1_states::fn_vent_CH4(b1_states::b1_state nextState) {
 // ... fn_EMERGENCY ... //
 b1_states::b1_state b1_states::fn_EMERGENCY(b1_states::b1_state nextState) {
 
-	std::cout << "Emergency procedure has been executed. Draining fuel lines...\n";
+	//std::cout << "Emergency procedure has been executed. Draining fuel lines...\n";
+	logger::info(__FILE__, "Emergency procedure has been executed. Draining fuel lines");
 	drain_lines();
 	return nextState;
 }
@@ -136,24 +146,31 @@ b1_states::b1_state b1_states::fn_CANCEL(b1_states::b1_state nextState) {
 	helium_CH4->close();
 	helium_LOX->close();
 
-	std::cout << "Launch has been cancelled\n";
-	std::cout << "Bronco One is being depressurized...\n";
-	std::cout << "Press ENTER to continue\n";
+	//std::cout << "Launch has been cancelled\n";
+	//std::cout << "Bronco One is being depressurized...\n";
+	//std::cout << "Press ENTER to continue\n";
+	logger::info(__FILE__, "Launch has been cancelled");
+	logger::info(__FILE__, "Bronco One is being depressurized...");
+	logger::info(__FILE__, "Press ENTER to continue");
 	std::cin.ignore();
 	std::cin.ignore();
 
 	// Try pressurizing again or drain the lines
 	char mode;
-	std::cout << "R: return to pressurization state\nD: drain lines\n";
+	//std::cout << "R: return to pressurization state\nD: drain lines\n";
+	logger::info(__FILE__, "R: return to pressurization state");
+	logger::info(__FILE__, "D: drain lines");
 	std::cin >> mode;
 
 	switch (mode) {
 	case 'R':
-		std::cout << "Returning to pressurization state\n";
-		std::cout << "Enter 3 to pressurize\n";
+		//std::cout << "Returning to pressurization state\n";
+		//std::cout << "Enter 3 to pressurize\n";
+		logger::info(__FILE__, "Returning to pressurization state. Enter 3 to pressurize");
 		return ST_FILL;
 	case 'D':
-		std::cout << "Executing drain procedure\n";
+		//std::cout << "Executing drain procedure\n";
+		logger::info(__FILE__, "Executing drain procedure");
 		drain_lines();
 		return ST_TERM;
 	default:
@@ -164,11 +181,14 @@ b1_states::b1_state b1_states::fn_CANCEL(b1_states::b1_state nextState) {
 
 // ... fn_ERROR ... //
 b1_states::b1_state b1_states::fn_ERROR(b1_states::b1_state nextState) {
-	std::cout << "State Machine not constructed properly. Check transition table.\n";
+	//std::cout << "State Machine not constructed properly. Check transition table.\n";
+	logger::warn(__FILE__, "State Machine transition table not constructed properly");
 	return sm_st.getPreviousState();
 }
 
 // METHODS
+
+// ... count the number of transitions ... //
 int b1_states::transCount(void) {
 	return (sizeof(trans) / sizeof(*trans));
 }
@@ -203,6 +223,7 @@ void b1_states::vent_CH4_pressure(void) {
 void b1_states::launch_countdown(void) {
 
 	std::cout << "Bronco One is launching in...\n";
+	logger::info(__FILE__, "Bronco One is launching in...");
 
 	for (int i = 5; i > -1; i--) {
 		std::cout << i << "\n";
@@ -220,7 +241,8 @@ void b1_states::burnout_timer(void) {
 // ... drain lines ... //
 void b1_states::drain_lines(void) {
 
-	std::cout << "Draining LOX line\n";
+	//std::cout << "Draining LOX line\n";
+	logger::info(__FILE__, "Draining LOX line");
 	helium_CH4->close();
 	vent_CH4->open();
 	vent_LOX->close();
@@ -229,11 +251,13 @@ void b1_states::drain_lines(void) {
 
 	std::this_thread::sleep_for(std::chrono::minutes(5));
 
-	std::cout << "Press 'ENTER' to proceed with draining CH4 line\n";
+	//std::cout << "Press 'ENTER' to proceed with draining CH4 line\n";
+	logger::info(__FILE__, "Press ENTER to proceed with draining CH4 line");
 	std::cin.ignore();
 	std::cin.ignore();
 
-	std::cout << "Draining CH4 line...\n";
+	//std::cout << "Draining CH4 line...\n";
+	logger::info(__FILE__, "Draining CH4 line");
 	vent_LOX->open();
 	vent_CH4->close();
 	helium_CH4->open();
@@ -242,6 +266,7 @@ void b1_states::drain_lines(void) {
 	std::this_thread::sleep_for(std::chrono::minutes(5));
 
 	vent_CH4->open();
-	std::cout << "Fuel lines drained successfully\n";
+	//std::cout << "Fuel lines drained successfully\n";
+	logger::info(__FILE__, "Fuel lines drained successfully");
 
 }

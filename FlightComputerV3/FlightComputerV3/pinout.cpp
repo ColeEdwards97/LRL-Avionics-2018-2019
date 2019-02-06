@@ -16,7 +16,8 @@ static pins pin_init[6] = {
 // ... Initialize GPIO pins to initial states ... //
 int initializePins() {
 
-	std::cout << "Exporting GPIO pins...\n";
+	//std::cout << "Exporting GPIO pins...\n";
+	logger::info(__FILE__, "Exporting GPIO pins...");
 
 	wiringPiSetupGpio();
 
@@ -26,8 +27,8 @@ int initializePins() {
 		digitalWrite(pin_init[i].pin, pin_init[i].state); // set the default state of the pin
 	}
 
-	std::cout << "GPIO pins exported successfully\n";
-
+	//std::cout << "GPIO pins exported successfully\n";
+	logger::info(__FILE__, "GPIO pins exported successfully");
 	return 0;
 
 }

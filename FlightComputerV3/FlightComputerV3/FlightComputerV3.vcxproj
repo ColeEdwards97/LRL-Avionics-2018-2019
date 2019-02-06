@@ -71,6 +71,7 @@
     <ClCompile Include="b1_hardware.cpp" />
     <ClCompile Include="b1_states.cpp" />
     <ClCompile Include="input.cpp" />
+    <ClCompile Include="logger.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pinout.cpp" />
     <ClCompile Include="pyrovalve.cpp" />
@@ -81,6 +82,7 @@
     <ClInclude Include="b1_hardware.h" />
     <ClInclude Include="b1_states.h" />
     <ClInclude Include="input.h" />
+    <ClInclude Include="logger.h" />
     <ClInclude Include="pinout.h" />
     <ClInclude Include="pyrovalve.h" />
     <ClInclude Include="solenoid.h" />

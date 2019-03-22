@@ -28,6 +28,7 @@ b1_states::b1_state b1_states::fn_init_init(b1_states::b1_state nextState) {
 	return nextState;
 }
 
+
 // ... fn_init_idle ... //
 b1_states::b1_state b1_states::fn_init_idle(b1_states::b1_state nextState) {
 	
@@ -158,6 +159,8 @@ b1_states::b1_state b1_states::fn_CANCEL(b1_states::b1_state nextState) {
 	// Try pressurizing again or drain the lines
 	char mode;
 	//std::cout << "R: return to pressurization state\nD: drain lines\n";
+
+prompt:
 	logger::info(__FILE__, "R: return to pressurization state");
 	logger::info(__FILE__, "D: drain lines");
 	std::cin >> mode;
@@ -174,6 +177,7 @@ b1_states::b1_state b1_states::fn_CANCEL(b1_states::b1_state nextState) {
 		drain_lines();
 		return ST_TERM;
 	default:
+		goto prompt;
 		break;
 	}
 	return nextState;
@@ -222,13 +226,13 @@ void b1_states::vent_CH4_pressure(void) {
 // ... launch countdown ... //
 void b1_states::launch_countdown(void) {
 
-	std::cout << "Bronco One is launching in...\n";
-	logger::info(__FILE__, "Bronco One is launching in...");
+	//std::cout << "Bronco One is launching in...\n";
+	logger::info(__FILE__, "Bronco One is launching in NOW...");
 
-	for (int i = 5; i > -1; i--) {
-		std::cout << i << "\n";
-		std::this_thread::sleep_for(std::chrono::seconds(1));
-	}
+	//for (int i = 5; i > -1; i--) {
+		//std::cout << i << "\n";
+		//std::this_thread::sleep_for(std::chrono::seconds(1));
+	//}
 
 }
 
@@ -240,6 +244,8 @@ void b1_states::burnout_timer(void) {
 
 // ... drain lines ... //
 void b1_states::drain_lines(void) {
+
+	std::this_thread::sleep_for(std::chrono::seconds(10));
 
 	//std::cout << "Draining LOX line\n";
 	logger::info(__FILE__, "Draining LOX line");

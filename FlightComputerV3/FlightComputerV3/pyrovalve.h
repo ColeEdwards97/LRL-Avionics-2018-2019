@@ -1,5 +1,7 @@
 #pragma once
 #include "b1_hardware.h"
+#include <thread>
+#include <chrono>
 
 
 class pyrovalve : public b1_hardware {
@@ -22,6 +24,7 @@ public:
 	// METHODS
 	void initialize(void);
 	void detonate(void);
+	static void cutPower(int, int);
 
 	pyroType getPyroType(void);
 	pyroState getCurrentState(void);
@@ -31,5 +34,7 @@ private:
 	// VARIABLES
 	pyroType type;
 	pyroState state;
+
+	int pyroCutOffDelayMS = 500;
 
 };

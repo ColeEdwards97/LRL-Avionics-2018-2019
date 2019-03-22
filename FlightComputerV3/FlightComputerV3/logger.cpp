@@ -19,6 +19,40 @@ namespace logger {
 
 	}
 
+	char getCharInput(void) {
+
+		retry:
+		char input;
+		std::lock_guard<std::mutex> lock(mtx);
+		std::cin >> input;
+		if (!std::cin.fail()) {
+			lock.~lock_guard();
+			return input;
+		}
+		else {
+			logger::warn(__FILE__, "Invalid input");
+			goto retry; 
+		}
+
+	}
+
+	int getIntInput(void) {
+
+	retry:
+		int input;
+		std::lock_guard<std::mutex> lock(mtx);
+		std::cin >> input;
+		if (!std::cin.fail()) {
+			lock.~lock_guard();
+			return input;
+		}
+		else {
+			logger::warn(__FILE__, "Invalid input");
+			goto retry;
+		}
+
+	}
+
 	std::string stripFilename(const char *fname) {
 		return std::string(fname).substr(std::string(fname).find_last_of("\\/") + 1);
 	}

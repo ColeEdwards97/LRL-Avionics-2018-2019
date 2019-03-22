@@ -245,12 +245,12 @@ void b1_states::vent_CH4_pressure(void) {
 // ... launch countdown ... //
 void b1_states::launch_countdown(void) {
 
-	std::cout << "Bronco One is launching in...\n";
+	std::cout << "Bronco One is launching!...\n";
 
-	for (int i = 5; i > -1; i--) {
-		std::cout << i << "\n";
-		std::this_thread::sleep_for(std::chrono::seconds(1));
-	}
+	//for (int i = 5; i > 0; i--) {
+		//std::cout << i << "\n";
+		//std::this_thread::sleep_for(std::chrono::seconds(1));
+	//}
 
 }
 

@@ -35,5 +35,7 @@ int main(void) {
 	std::cin.ignore();
 	std::cin.ignore();
 
+	cleanupPins();
+
 	return 0;
 }

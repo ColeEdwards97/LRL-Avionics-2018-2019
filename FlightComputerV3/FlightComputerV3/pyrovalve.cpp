@@ -36,6 +36,7 @@ void pyrovalve::initialize(void) {
 void pyrovalve::detonate(void) {
 
 	digitalWrite(this->getHardwarePin(), LOW);
+	std::thread(cutPower, this->pyroCutOffDelayMS, this->getHardwarePin()).detach();
 
 	switch (type)
 	{
@@ -49,6 +50,12 @@ void pyrovalve::detonate(void) {
 		break;
 	}
 
+}
+
+// ... Cut power to the pyrovalve to prevent overcurrenting ... //
+void pyrovalve::cutPower(int delay, int pin) {
+	std::this_thread::sleep_for(std::chrono::milliseconds(delay));
+	digitalWrite(pin, HIGH);
 }
 
 // GETTERS

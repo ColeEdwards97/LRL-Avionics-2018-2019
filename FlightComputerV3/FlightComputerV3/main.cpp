@@ -4,7 +4,7 @@
 #include <thread>
 #include <chrono>
 #include <wiringPi.h>
-
+// can you see this hoang?
 #include "state_machine.h"
 #include "input.h"
 #include "logger.h"
@@ -21,14 +21,14 @@ int main(void) {
 	initializePins();
 
 	// Create input threads
-	std::thread tPressureTransducerData(getPressureTransducerReadings);
+	//std::thread tPressureTransducerData(getPressureTransducerReadings);
 	std::thread tUserInput(getUserInput);
 
 	// Start the state machine
 	sm.run();
 
 	// Join input threads
-	tPressureTransducerData.join();
+	//tPressureTransducerData.join();
 	tUserInput.join();
 
 	// Wait to exit

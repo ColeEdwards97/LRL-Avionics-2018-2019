@@ -4,7 +4,7 @@
 #include <thread>
 #include <chrono>
 #include <wiringPi.h>
-// can you see this hoang?
+
 #include "state_machine.h"
 #include "input.h"
 #include "logger.h"
@@ -17,7 +17,7 @@ int main(void) {
 	// Initialize State Machine
 	state_machine& sm = state_machine::getInstance();
 
-	// Initialize GPIO pins
+	// Initialize GPIO pins k
 	initializePins();
 
 	// Create input threads

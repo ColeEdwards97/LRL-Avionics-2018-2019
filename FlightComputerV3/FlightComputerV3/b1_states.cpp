@@ -2,7 +2,9 @@
 #include "state_machine.h"
 
 
-// CREATE HARDWARE
+// CREATE HARDWARE // 
+// If there are changes in valve configuration (new normally "OPEN" or "CLOSE") just change following setting in the code.
+// NC = Normally Closed ---- NO = Normally Open
 solenoid* b1_states::helium_LOX = new solenoid(PIN_HELIUM_LOX, solenoid::solenoidType::NC, solenoid::solenoidState::CLOSED, solenoid::solenoidLine::LOX);
 solenoid* b1_states::helium_CH4 = new solenoid(PIN_HELIUM_CH4, solenoid::solenoidType::NC, solenoid::solenoidState::CLOSED, solenoid::solenoidLine::CH4);
 solenoid* b1_states::vent_LOX = new solenoid(PIN_VENT_LOX, solenoid::solenoidType::NC, solenoid::solenoidState::CLOSED, solenoid::solenoidLine::LOX);

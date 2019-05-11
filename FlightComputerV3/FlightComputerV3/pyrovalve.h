@@ -3,7 +3,8 @@
 #include <thread>
 #include <chrono>
 
-
+// If the design changes from Pyro Valve to Servo Actuator Valve
+// Just change Delay time at line 39 to properly open specific valve.
 class pyrovalve : public b1_hardware {
 
 public:

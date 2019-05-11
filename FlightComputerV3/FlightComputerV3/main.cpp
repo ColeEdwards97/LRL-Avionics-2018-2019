@@ -25,6 +25,9 @@ int main(void) {
 	std::thread tUserInput(getUserInput);
 
 	// Start the state machine
+	// To change the time interval for how long Pyro valve will open
+	// CHANGING IN "pyrovalve.h" -> pyroCutOffDelaysMS -> Change time in micro-second scale
+
 	sm.run();
 
 	// Join input threads

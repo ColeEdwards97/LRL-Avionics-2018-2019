@@ -2,25 +2,38 @@
 #include "state_machine.h"
 
 
-// CREATE HARDWARE // 
+// ************************* CREATE HARDWARE ****************************************** // 
+// **************** SPECIFY HARDWARE PROPERTIES HERE ********************************** //
+
 // If there are changes in valve configuration (new normally "OPEN" or "CLOSE") just change following setting in the code.
-// NC = Normally Closed ---- NO = Normally Open
+// Type:  NC = Normally Closed ---- NO = Normally Open		   //
+// State: OPEN = Currently Open ---- ClOSED = Currently Closed //
+// Line:  LOX = Liquid Oxygen ---- CH4 = Liquid Methane		   //
+// Line:  _5V = 5V Power ---- _24V = 24V Power				   //
+// ... PINOUT ... //
+// PIN_HELIUM_LOX = 5	//
+// PIN_HELIUM_CH4 = 13	//
+// PIN_VENT_LOX   = 6	//
+// PIN_VENT_CH4   = 19	//
+// PIN_PYRO_LOX   = 12	//
+// PIN_PYRO_CH4   = 16	//
+// PIN_BAT_5V     = 20	//
+// PIN_BAT_24V    = 21	//
+
 solenoid* b1_states::helium_LOX = new solenoid(PIN_HELIUM_LOX, solenoid::solenoidType::NC, solenoid::solenoidState::CLOSED, solenoid::solenoidLine::LOX);
 solenoid* b1_states::helium_CH4 = new solenoid(PIN_HELIUM_CH4, solenoid::solenoidType::NC, solenoid::solenoidState::CLOSED, solenoid::solenoidLine::CH4);
-solenoid* b1_states::vent_LOX = new solenoid(PIN_VENT_LOX, solenoid::solenoidType::NC, solenoid::solenoidState::CLOSED, solenoid::solenoidLine::LOX);
+solenoid* b1_states::vent_LOX = new solenoid(PIN_VENT_LOX, solenoid::solenoidType::NO, solenoid::solenoidState::CLOSED, solenoid::solenoidLine::LOX);
 solenoid* b1_states::vent_CH4 = new solenoid(PIN_VENT_CH4, solenoid::solenoidType::NO, solenoid::solenoidState::CLOSED, solenoid::solenoidLine::CH4);
 pyrovalve* b1_states::pyro_LOX = new pyrovalve(PIN_PYRO_LOX, pyrovalve::pyroType::NC);
 pyrovalve* b1_states::pyro_CH4 = new pyrovalve(PIN_PYRO_CH4, pyrovalve::pyroType::NC);
-
-
+sbat* b1_states::bat_5V =  new sbat(PIN_BAT_5V, sbat::sbatState::CLOSED);
+sbat* b1_states::bat_24V = new sbat(PIN_BAT_24V, sbat::sbatState::CLOSED);
 // GET INSTANCE OF STATE MACHINE
 state_machine& sm_st = state_machine::getInstance();
-
 
 // CONSTRUCTOR
 b1_states::b1_states() {
 }
-
 
 // STATE FUNCTIONS
 
@@ -69,6 +82,15 @@ b1_states::b1_state b1_states::fn_fill_pressurize(b1_states::b1_state nextState)
 	//std::cout << "Bronco One is being pressurized...\nContinue when pressurization is finished\n";
 	logger::info(__FILE__, "Bronco One is being pressurized...");
 	logger::info(__FILE__, "Continue when pressurization is finished.");
+	return nextState;
+}
+
+// ... fn_disconnect_battery ... //
+b1_states::b1_state b1_states::fn_connect_battery(b1_states::b1_state nextState) {
+	logger::info(__FILE__, "Engaging battery power now");
+	logger::info(__FILE__, "Start disconnecting external power");
+	bat_24V->batOn();
+	bat_5V->batOn();
 	return nextState;
 }
 
@@ -228,13 +250,12 @@ void b1_states::vent_CH4_pressure(void) {
 // ... launch countdown ... //
 void b1_states::launch_countdown(void) {
 
+	for (int i = 5; i > -1; i--) {
+		std::cout << "-------------[ " << i << " ]-------------" << "\n";
+		std::this_thread::sleep_for(std::chrono::seconds(1));
+	}
 	//std::cout << "Bronco One is launching in...\n";
 	logger::info(__FILE__, "Bronco One is launching in NOW...");
-
-	//for (int i = 5; i > -1; i--) {
-		//std::cout << i << "\n";
-		//std::this_thread::sleep_for(std::chrono::seconds(1));
-	//}
 
 }
 

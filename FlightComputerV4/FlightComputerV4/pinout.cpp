@@ -2,13 +2,15 @@
 
 
 // STRUCTS
-static pins pin_init[6] = {
+static pins pin_init[8] = {
 	{ PIN_HELIUM_LOX,  OUTPUT, HIGH },
 	{ PIN_HELIUM_CH4,  OUTPUT, HIGH },
 	{ PIN_VENT_LOX, OUTPUT, HIGH },
 	{ PIN_VENT_CH4, OUTPUT, HIGH },
 	{ PIN_PYRO_LOX, OUTPUT, HIGH },
-	{ PIN_PYRO_CH4, OUTPUT, HIGH }
+	{ PIN_PYRO_CH4, OUTPUT, HIGH },
+	{ PIN_BAT_5V, OUTPUT, HIGH },
+	{ PIN_BAT_24V, OUTPUT, HIGH }
 };
 
 // METHODS

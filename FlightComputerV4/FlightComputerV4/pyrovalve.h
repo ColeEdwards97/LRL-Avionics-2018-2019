@@ -36,6 +36,6 @@ private:
 	pyroType type;
 	pyroState state;
 
-	int pyroCutOffDelayMS = 500;
+	int pyroCutOffDelayMS = 5000;
 
 };

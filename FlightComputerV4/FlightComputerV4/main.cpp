@@ -1,3 +1,11 @@
+
+
+// State Machine
+#include "state_machine.h"
+#include "input.h"
+#include "logger.h"
+
+// Hardwares
 #include <iostream>	
 #include <cstdio>
 #include <unistd.h>
@@ -5,13 +13,10 @@
 #include <chrono>
 #include <wiringPi.h>
 
-#include "state_machine.h"
-#include "input.h"
-#include "logger.h"
 
-
-int main(void) {
-	
+int main(void)
+{
+	//************************ INITIALIZE STATE MACHINE ***************************//
 	logger::info(__FILE__, "Started Flight Computer");
 
 	// Initialize State Machine
@@ -21,8 +26,9 @@ int main(void) {
 	initializePins();
 
 	// Create input threads
-	//std::thread tPressureTransducerData(getPressureTransducerReadings);
+	std::thread tPressureTransducerData(getPressureTransducerReadings);
 	std::thread tUserInput(getUserInput);
+	//std::thread tThermocoupleReadings(getThermocoupleReadings);
 
 	// Start the state machine
 	// To change the time interval for how long Pyro valve will open
@@ -31,8 +37,10 @@ int main(void) {
 	sm.run();
 
 	// Join input threads
-	//tPressureTransducerData.join();
+	tPressureTransducerData.join();
 	tUserInput.join();
+	//tThermocoupleReadings.join();
+
 
 	// Wait to exit
 	std::cin.ignore();

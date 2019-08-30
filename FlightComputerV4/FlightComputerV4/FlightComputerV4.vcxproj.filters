@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="b1_hardware.cpp">
+      <Filter>bronco1</Filter>
+    </ClCompile>
+    <ClCompile Include="b1_states.cpp">
+      <Filter>bronco1</Filter>
+    </ClCompile>
+    <ClCompile Include="input.cpp">
+      <Filter>bronco1</Filter>
+    </ClCompile>
+    <ClCompile Include="logger.cpp">
+      <Filter>bronco1</Filter>
+    </ClCompile>
+    <ClCompile Include="pinout.cpp">
+      <Filter>bronco1</Filter>
+    </ClCompile>
+    <ClCompile Include="pyrovalve.cpp">
+      <Filter>bronco1</Filter>
+    </ClCompile>
+    <ClCompile Include="sbat.cpp">
+      <Filter>bronco1</Filter>
+    </ClCompile>
+    <ClCompile Include="solenoid.cpp">
+      <Filter>bronco1</Filter>
+    </ClCompile>
+    <ClCompile Include="state_machine.cpp">
+      <Filter>bronco1</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>bronco1</Filter>
+    </ClCompile>
+    <ClCompile Include="tank_level.cpp">
+      <Filter>bronco1</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="b1_hardware.h">
+      <Filter>bronco1</Filter>
+    </ClInclude>
+    <ClInclude Include="b1_states.h">
+      <Filter>bronco1</Filter>
+    </ClInclude>
+    <ClInclude Include="input.h">
+      <Filter>bronco1</Filter>
+    </ClInclude>
+    <ClInclude Include="logger.h">
+      <Filter>bronco1</Filter>
+    </ClInclude>
+    <ClInclude Include="pinout.h">
+      <Filter>bronco1</Filter>
+    </ClInclude>
+    <ClInclude Include="pyrovalve.h">
+      <Filter>bronco1</Filter>
+    </ClInclude>
+    <ClInclude Include="sbat.h">
+      <Filter>bronco1</Filter>
+    </ClInclude>
+    <ClInclude Include="solenoid.h">
+      <Filter>bronco1</Filter>
+    </ClInclude>
+    <ClInclude Include="state_machine.h">
+      <Filter>bronco1</Filter>
+    </ClInclude>
+    <ClInclude Include="tank_level.h">
+      <Filter>bronco1</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="bronco1">
+      <UniqueIdentifier>{48d47f11-f129-4643-9d41-a97a05c08869}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

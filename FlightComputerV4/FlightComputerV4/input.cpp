@@ -26,10 +26,11 @@ int getPressureTransducerReadings(void) {
 	int adcbits = 16;
 	int chan[2] = { 0,1 };
 	int max_val = 750;
-	int correction = -82;
+	int correction = -89.6604;
 	int a2dval;
 	float a2dvol;
 	float a2dpsi;
+	float a2dpsi_correction;
 	int max_LOX_pressure = 330;
 	int max_CH4_pressure = 330;
 
@@ -42,7 +43,6 @@ int getPressureTransducerReadings(void) {
 	else {
 
 		//std::cout << "Reading PT data...\n";
-		logger::info(__FILE__, "Reading PT data");
 
 		while (input_sm.isRunning()) {
 
@@ -50,29 +50,25 @@ int getPressureTransducerReadings(void) {
 
 				a2dval = analogRead(pinbase + j);
 				a2dvol = a2dval * 4.096 / (pow(2, (adcbits - 1)) - 1);
-				a2dpsi = a2dvol * 198.66f - 112.66f + 23;
+				a2dpsi = a2dvol * 198.66f - 112.66f + 23 - correction;
 				//a2dpsi = a2dval * max_val / (pow(2, (adcbits - 1) - 1)) - correction;
 
 				if (j == 0) {
 
 					std::time_t time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 					data_file << time << "\t" << a2dpsi << "\t";
-
+					printf("LOX Tank Pressure: %f [psi]\n", a2dpsi);
 					if (a2dpsi >= max_LOX_pressure) {
-						//std::cout << "LOX line is at operating pressure";
 						logger::warn(__FILE__, "LOX line is at operating pressure");
 						if (!states.vent_LOX->isOpen()) {
 							input_sm.pushEvent(states.EV_OVR_PR_LOX);
 						}
 					}
-
 				}
 				if (j == 1) {
-
+					//printf("FUE Tank Pressure: %f [psi]\n", a2dpsi);
 					data_file << a2dpsi << "\n";
-
 					if (a2dpsi >= max_CH4_pressure) {
-						//std::cout << "CH4 line is at operating pressure";
 						logger::warn(__FILE__, "CH4 line is at operating pressure");
 						if (!states.vent_CH4->isOpen()) {
 							input_sm.pushEvent(states.EV_OVR_PR_CH4);
@@ -122,7 +118,13 @@ int getUserInput(void) {
 			case 'Y':
 				input_sm.pushEvent(static_cast<b1_states::b1_event>(input));
 				break;
-			case 'N':
+			case 'y':
+				input_sm.pushEvent(static_cast<b1_states::b1_event>(input));
+				break;
+			case 'N': 
+				input_sm.pushEvent(states.EV_CANCEL);
+				break;
+			case 'n':
 				input_sm.pushEvent(states.EV_CANCEL);
 				break;
 			default:
@@ -140,6 +142,26 @@ int getUserInput(void) {
 	logger::info(__FILE__, "Gathered User Input");
 	return 0;
 }
+
+// ... MAX31855 Set Up ... //
+int max31855Setup(const int pinBase, int spiChannel)
+{
+	struct wiringPiNodeStruct *node;
+	if (wiringPiSPISetup(spiChannel, 5000000) < 0)
+	//{
+	//	logger::info(__FILE__, "MAX31855 Failed to run");
+	//}
+		return FALSE;
+
+	node = wiringPiNewNode(pinBase, 8); // ... GPIO
+	node->fd			= spiChannel;
+	//node->analogRead	= myAnalogread;
+
+	return TRUE;
+}
+
+//static int myAnalogRead(struct wiringPiNodeStruct *node, int pin)
+
 
 void check_pt_readings(void) {
 

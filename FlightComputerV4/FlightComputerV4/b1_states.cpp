@@ -229,7 +229,7 @@ void b1_states::vent_LOX_pressure(void) {
 	// close LOX vent valve
 
 	vent_LOX->open();
-	std::this_thread::sleep_for(std::chrono::milliseconds(500));
+	std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 	vent_LOX->close();
 
 }
@@ -242,7 +242,7 @@ void b1_states::vent_CH4_pressure(void) {
 	// close CH4 vent valve
 
 	vent_CH4->open();
-	std::this_thread::sleep_for(std::chrono::milliseconds(250));
+	std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 	vent_CH4->close();
 
 }

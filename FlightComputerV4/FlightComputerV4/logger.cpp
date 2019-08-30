@@ -7,6 +7,7 @@ namespace logger {
 		std::lock_guard<std::mutex> lock(mtx);
 		std::cout.width(28); std::cout << std::left << "[INFO][" + stripFilename(fname) + "]";
 		std::cout.width(20); std::cout << std::left << message + "\n";
+		//std::cout.width(5);  std::cout << std::left << round_to_nearest + "\n";
 		lock.~lock_guard();
 
 	}
